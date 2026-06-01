@@ -20,7 +20,30 @@
 | `docs/` | 迁移说明、项目填写入口、参考图学习记录 |
 | `sample/manifest.example.json` | 示例 manifest，不包含真实图片 |
 
-## 快速使用
+## 下载安装到直接使用
+
+下载安装到目标电脑：
+
+```bash
+cd ~/Downloads
+git clone https://github.com/tandaikun311-lang/ai-aesthetic-report.git
+cd ai-aesthetic-report
+bash install.sh
+```
+
+安装后会得到：
+
+- Codex 技能：`~/.codex/skills/face-consultation-report`
+- V2 报告渲染命令：`~/.local/bin/face-report-v2`
+- 基础报告渲染命令：`~/.local/bin/face-report-basic`
+
+当前仓库是私有仓库。别人要下载，需要你先在 GitHub 里添加 collaborator，或者把仓库改成 Public。
+
+详细步骤看：
+
+`docs/下载安装到直接使用说明.md`
+
+## 快速使用渲染脚本
 
 安装依赖：
 
@@ -56,4 +79,3 @@ python3 scripts/render_sales_v2.py \
 ## 隐私规则
 
 本仓库默认 `.gitignore` 会忽略常见图片格式，避免误提交客户人脸。如果要放公开示例，请使用无真人身份风险的合成图片，并确认有权发布。
-
