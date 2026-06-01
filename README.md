@@ -1,0 +1,59 @@
+# AI 美学升级报告
+
+这是一个本机可执行的医美美学升级报告工作流，用于把客户正脸照片整理成：
+
+1. 原图
+2. 客户 AI 效果图
+3. 效果标记图
+4. 报告图
+5. 网资沟通文案与承接跟进表
+
+本仓库只保存技能规则、渲染脚本、模板和说明文档。真实客户照片、AI 效果图、报告截图、含客户人脸的 Word/Excel 成品不要提交到 GitHub。
+
+## 目录
+
+| 路径 | 用途 |
+|---|---|
+| `skill/` | Codex 技能说明、智能体分工、报告规范 |
+| `scripts/` | HTML/PNG 报告渲染脚本 |
+| `templates/` | 网资沟通文案和跟进表模板 |
+| `docs/` | 迁移说明、项目填写入口、参考图学习记录 |
+| `sample/manifest.example.json` | 示例 manifest，不包含真实图片 |
+
+## 快速使用
+
+安装依赖：
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+复制示例 manifest：
+
+```bash
+cp sample/manifest.example.json /tmp/manifest.json
+```
+
+把 `/tmp/manifest.json` 里的图片路径改成你本机客户图片路径后运行：
+
+```bash
+python3 scripts/render_sales_v2.py \
+  --manifest /tmp/manifest.json \
+  --out /Users/apple/Downloads/codex/任务输出/面诊报告_测试
+```
+
+输出目录会生成 `report-v2.html`、`report-v2.png` 和 `assets/`。PDF 不作为默认交付。
+
+## 默认执行标准
+
+- 必须先生成客户 AI 效果图，不能用原图充当 After。
+- 客户 AI 效果图要有明显变化，但保留本人身份。
+- 效果标记图要说明哪里变了，标注点能回到项目方向。
+- 报告图主图要铺满，不留明显灰白边。
+- 沟通文档要包含四张图、话术表、异议处理、预约面诊和复购维护。
+- 所有内容仅做美学沟通参考，不构成医学诊断、治疗建议或效果承诺。
+
+## 隐私规则
+
+本仓库默认 `.gitignore` 会忽略常见图片格式，避免误提交客户人脸。如果要放公开示例，请使用无真人身份风险的合成图片，并确认有权发布。
+

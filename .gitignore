@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated reports and private client assets
+outputs/
+reports/
+客户资料/
+客户照片/
+sample/private/
+*.log
+
+# Do not commit identifiable face images by default.
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.heic
+
+# Keep placeholder docs if needed.
+!assets-placeholder/.gitkeep
+!sample/manifest.example.json
+

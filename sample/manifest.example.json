@@ -1,0 +1,67 @@
+{
+  "client_label": "03/30",
+  "title": "疲态下去，精致感上来",
+  "subtitle": "保留本人五官，提升眼周、轮廓与气色",
+  "visual_age": "-5~7 岁",
+  "visual_age_note": "仅代表视觉状态参考，不构成医学效果承诺。",
+  "before_image": "/absolute/path/to/client-before.jpg",
+  "effect_image": "/absolute/path/to/client-ai-effect-clean.png",
+  "after_image": "/absolute/path/to/client-ai-effect-annotated.png",
+  "diagnosis": [
+    {
+      "title": "眼周疲态",
+      "body": "眼下暗沉与泪沟感明显，精神度被削弱。"
+    },
+    {
+      "title": "面中支撑不足",
+      "body": "苹果肌饱满度不够，面中立体感偏弱。"
+    },
+    {
+      "title": "法令纹阴影",
+      "body": "鼻翼至嘴角阴影明显，中下面部显疲态。"
+    },
+    {
+      "title": "轮廓不清晰",
+      "body": "下颌缘不够干净，精致感被拉低。"
+    }
+  ],
+  "project_mappings": [
+    {
+      "label": "眼周提亮",
+      "project": "眼周管理 / 熊猫针 / 胶原眼周",
+      "solves": "疲态、泪沟、黑眼圈",
+      "details": ["眼周明亮有神", "告别暗沉"],
+      "crop_box": [0.18, 0.36, 0.83, 0.55]
+    },
+    {
+      "label": "面中支撑",
+      "project": "中大分子玻尿酸 / 再生材料 / 胶原支撑",
+      "solves": "苹果肌、法令纹支撑",
+      "details": ["填补流失容积", "苹果肌饱满上提"],
+      "crop_box": [0.25, 0.46, 0.78, 0.69]
+    }
+  ],
+  "design_thinking": {
+    "goal": "不换脸，保留本人五官和亲和感，只做状态型精调。",
+    "path": "先把眼周疲态降下来，再补面中支撑，让脸从累变成柔和、有精神。",
+    "result": "轮廓更干净、肤质更通透、唇部气色更好，整体呈现更精致的自然感。"
+  },
+  "advice": [
+    {
+      "title": "建议一：眼周精调",
+      "why": "眼周是第一眼最容易显疲惫的位置。",
+      "direction": "先做眼周管理、熊猫针/胶原眼周方向，必要时做眼袋评估。"
+    },
+    {
+      "title": "建议二：面中支撑",
+      "why": "法令纹和疲态很多时候不是单独一条线的问题，而是面中支撑不足。",
+      "direction": "围绕苹果肌、鼻基底、法令纹做联合设计。"
+    },
+    {
+      "title": "建议三：肤质轮廓维护",
+      "why": "肤质和轮廓决定精致度，适合作为加分项。",
+      "direction": "用水光/光子改善通透度，再配合下颌缘收紧和唇部气色管理。"
+    }
+  ]
+}
+

@@ -1,0 +1,230 @@
+version: "2026-05-25"
+workflow_name: "AI美学升级报告多智能体流水线"
+principle: "先分工，后合成；每个步骤都产出可交接材料，最终由质检智能体统一验收。"
+
+agents:
+  - id: input_gate_agent
+    name: "01_照片与需求质检智能体"
+    role: "判断输入照片、客户需求和合规边界是否适合生成报告。"
+    inputs:
+      - "客户原图"
+      - "用户需求"
+      - "是否用于成交/网资/医生面诊"
+    outputs:
+      - "input_check.json"
+      - "可执行/需补图/需拒绝或转人工说明"
+    required_checks:
+      - "必须是成年人、非性化场景。"
+      - "优先正脸或接近正脸，能看清眼、鼻、唇、皮肤和轮廓。"
+      - "不把 AI 报告当医学诊断。"
+      - "如果照片过糊、遮挡严重、角度极端，先要求补图。"
+    handoff_to:
+      - diagnosis_agent
+
+  - id: diagnosis_agent
+    name: "02_原图美学诊断智能体"
+    role: "只基于可见画面做审美观察，输出原图问题和优先级。"
+    inputs:
+      - "客户原图"
+      - "input_check.json"
+      - "AI面诊调整点收费项目映射库"
+    outputs:
+      - "diagnosis.json"
+      - "原图问题卡片文案"
+      - "初步优先级：眼周/面中/法令纹/轮廓/肤质/唇部"
+    required_checks:
+      - "使用观察性表达：观察到、可关注、视觉上、状态感。"
+      - "不能写丑、老、垮、严重、必须做。"
+      - "至少输出 3 个原图问题，最多 4 个进入主报告。"
+      - "每个问题必须能对应后续项目方向。"
+    handoff_to:
+      - image_design_agent
+      - project_mapping_agent
+
+  - id: image_design_agent
+    name: "03_AI效果设计智能体"
+    role: "设计客户 AI 效果图和效果标记图的作图要求。"
+    inputs:
+      - "客户原图"
+      - "diagnosis.json"
+      - "用户指定风格"
+    outputs:
+      - "image_prompt_clean.txt"
+      - "image_prompt_annotated.txt"
+      - "clean_effect_image: 客户 AI 效果图"
+      - "annotated_effect_image: 效果标记图"
+    required_checks:
+      - "客户 AI 效果图先让客户看结果感，不堆项目文字。"
+      - "效果标记图必须有编号、细线、短标签，标注眼周、泪沟/眼袋、面中、法令纹、下颌缘、肤质、唇部。"
+      - "必须保留同一个人：身份、脸型基础、发型、服装、角度和真实质感。"
+      - "不能做成网红脸、大眼怪、尖下巴、塑料皮肤。"
+    handoff_to:
+      - annotation_agent
+      - project_mapping_agent
+
+  - id: annotation_agent
+    name: "04_效果标记校对智能体"
+    role: "检查效果标记图是否能被网资和客户看懂。"
+    inputs:
+      - "annotated_effect_image"
+      - "diagnosis.json"
+    outputs:
+      - "annotation_check.json"
+      - "标注点清单"
+    required_checks:
+      - "标注不遮挡眼睛、鼻子、嘴巴主体。"
+      - "每个编号有标题和 2 行视觉变化说明。"
+      - "标注点和原图问题能对应。"
+      - "图片不能有乱码、水印、错误文字。"
+    handoff_to:
+      - project_mapping_agent
+
+  - id: project_mapping_agent
+    name: "05_项目映射与升单智能体"
+    role: "把每个变美点对应到可面诊确认的项目方向和成交优先级。"
+    inputs:
+      - "diagnosis.json"
+      - "annotation_check.json"
+      - "AI面诊调整点收费项目映射库"
+    outputs:
+      - "project_mappings.json"
+      - "三层项目建议：核心项目/辅助项目/维护复购"
+      - "manifest-v2.json 中的 project_mappings 和 advice"
+    required_checks:
+      - "一个明显变化点至少对应一个项目方向。"
+      - "报告图只放项目方向，不堆价格和过细项目名。"
+      - "推荐顺序：先最影响状态，再结构支撑，最后肤质/轮廓/唇部维护。"
+      - "所有项目回到医生面诊确认，不能承诺效果。"
+    handoff_to:
+      - copywriting_agent
+      - report_layout_agent
+
+  - id: copywriting_agent
+    name: "06_客户报告文案智能体"
+    role: "写客户看得懂、不会反感、又能建立需求的报告文案。"
+    inputs:
+      - "diagnosis.json"
+      - "project_mappings.json"
+      - "AI面诊报告沟通成交SOP"
+    outputs:
+      - "标题/副标题"
+      - "美学设计思路"
+      - "三条优先级建议"
+      - "视觉年龄说明"
+    required_checks:
+      - "标题讲视觉结果和审美价值，不写内部成交逻辑。"
+      - "底部必须写美学设计思路：设计目标、视觉路径、审美结果。"
+      - "三条建议必须写为什么这么建议和建议方向。"
+      - "不能卖焦虑、不能夸大、不能画饼。"
+    handoff_to:
+      - report_layout_agent
+      - consultant_agent
+
+  - id: report_layout_agent
+    name: "07_报告排版渲染智能体"
+    role: "用固定 V2 模板生成 HTML 和 PNG 报告。"
+    inputs:
+      - "before_image"
+      - "effect_image"
+      - "after_image"
+      - "manifest-v2.json"
+      - "render_sales_v2.py"
+    outputs:
+      - "00_交付入口.html"
+      - "report-v2.html"
+      - "report-v2.png"
+      - "assets/"
+    required_checks:
+      - "入口页顺序必须是：原图 -> 客户 AI 效果图 -> 效果标记图 -> 报告图 -> 沟通细节。"
+      - "V2 主内容区必须优先放大 Before/After：210px 445px 445px 400px。"
+      - "主图必须 object-fit: cover 铺满，不能出现明显左右灰白留白。"
+      - "底部建议卡不能留大面积空白。"
+      - "不默认导出 PDF。"
+    handoff_to:
+      - consultant_agent
+      - qa_agent
+
+  - id: consultant_agent
+    name: "08_网资沟通承接智能体"
+    role: "生成网资/咨询师可复制使用的话术和跟进表。"
+    inputs:
+      - "report-v2.png"
+      - "clean_effect_image"
+      - "annotated_effect_image"
+      - "project_mappings.json"
+      - "AI面诊报告沟通成交SOP"
+    outputs:
+      - "网资沟通文案_复制即用版.docx"
+      - "网资沟通文案_复制即用版.md"
+      - "网资咨询师承接跟进表_详细版.xlsx"
+      - "网资咨询师承接跟进表_详细版.md"
+      - "网资沟通细节总表_含四图.docx"
+      - "网资沟通细节总表_含四图.xlsx"
+    required_checks:
+      - "沟通细节顶部必须放 4 张图：客户原图、客户 AI 效果图、优化升级标记图、最终报告图。"
+      - "沟通文案话术必须整理为一张表，包含阶段、发送素材、话术、提问、推荐方向和下一步动作。"
+      - "话术按原图、客户 AI 效果图、效果标记图、报告图、沟通细节顺序组织。"
+      - "必须包含：发图话术、拆点话术、项目推荐、异议处理、预约面诊、未回复追踪、成交后复购维护。"
+      - "表格必须包含：客户基础信息、AI 拆点项目承接、沟通 SOP、推荐分层、异议处理、预约追踪、每日复盘。"
+      - "不能出现保证效果、一次解决、永久有效、无风险等表达。"
+    handoff_to:
+      - customer_perspective_agent
+
+  - id: customer_perspective_agent
+    name: "09_客户视角体验校对智能体"
+    role: "站在客户视角检查报告和沟通表是否看得懂、愿意继续聊、不会产生被强推或被冒犯的感觉。"
+    inputs:
+      - "原图"
+      - "客户 AI 效果图"
+      - "效果标记图"
+      - "报告图"
+      - "网资沟通细节总表"
+    outputs:
+      - "客户视角质检表"
+      - "客户可能回复与接话表"
+      - "不适表达替换表"
+    required_checks:
+      - "每一阶段都要有客户心理、客户可能回复、网资接话和下一步动作。"
+      - "不能只写网资单向话术，必须写客户看完后的反应路径。"
+      - "不能出现贬低客户、制造焦虑、强推项目的表达。"
+      - "客户看完四张图后，必须能理解为什么推荐这些项目方向。"
+    handoff_to:
+      - qa_agent
+
+  - id: qa_agent
+    name: "10_终检交付智能体"
+    role: "统一检查交付包是否完整、顺序是否正确、内容是否合规。"
+    inputs:
+      - "全部输出文件"
+    outputs:
+      - "delivery_checklist.md"
+      - "最终交付文件夹"
+    required_checks:
+      - "必须有原图、客户 AI 效果图、效果标记图、报告图、沟通细节。"
+      - "报告图主图铺满，没有明显留白。"
+      - "网资文案和跟进表存在。"
+      - "所有医学相关表达都有边界，不构成诊断或效果承诺。"
+      - "每次优化完成后必须重新封档：记录优化时间、优化内容、涉及文件、质检结果和最终版路径。"
+      - "封档只做本机版本归档；迁移包仅在用户明确要求时更新。"
+      - "本机技能模板和本次交付物已同步；迁移包仅在用户明确要求时更新。"
+    handoff_to:
+      - "user"
+
+execution_order:
+  - input_gate_agent
+  - diagnosis_agent
+  - image_design_agent
+  - annotation_agent
+  - project_mapping_agent
+  - copywriting_agent
+  - report_layout_agent
+  - consultant_agent
+  - customer_perspective_agent
+  - qa_agent
+
+default_delivery_order:
+  - "01 原图"
+  - "02 客户 AI 效果图"
+  - "03 效果标记图"
+  - "04 报告图"
+  - "05 沟通细节 / 网资表"

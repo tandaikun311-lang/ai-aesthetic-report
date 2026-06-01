@@ -1,0 +1,6 @@
+interface:
+  display_name: "面诊分析报告"
+  short_description: "从素人照片生成AI美学升级升单报告"
+  default_prompt: "Use $face-consultation-report to turn a clear front-facing portrait into a customer-facing AI aesthetic upgrade report with Before/After, project mapping, visual age, and prioritized recommendations."
+policy:
+  allow_implicit_invocation: true
