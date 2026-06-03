@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img" aria-label="Synthetic non-identifiable annotated after portrait placeholder">
+  <rect width="900" height="1200" fill="#eef4fa"/>
+  <rect x="115" y="104" width="670" height="992" rx="42" fill="#fbfdff" stroke="#cbd8e7" stroke-width="4"/>
+  <ellipse cx="450" cy="755" rx="232" ry="246" fill="#dcc0ad"/>
+  <path d="M263 456c43-128 132-202 190-202 92 0 180 70 214 200 25 95-3 209-49 289-45 81-105 126-169 126-63 0-121-43-166-123-47-82-53-195-20-290z" fill="#e9cdbc" stroke="#8d6f61" stroke-width="8"/>
+  <path d="M268 503c16-136 88-248 188-248 93 0 172 101 184 248-35-70-97-106-184-106-88 0-153 36-188 106z" fill="#3b3535"/>
+  <path d="M280 500c48-29 100-45 176-45 79 0 130 16 172 47" fill="none" stroke="#2f2a29" stroke-width="42" stroke-linecap="round"/>
+  <ellipse cx="347" cy="568" rx="48" ry="22" fill="#fff"/>
+  <ellipse cx="548" cy="568" rx="48" ry="22" fill="#fff"/>
+  <circle cx="348" cy="568" r="17" fill="#2f4156"/>
+  <circle cx="548" cy="568" r="17" fill="#2f4156"/>
+  <circle cx="354" cy="562" r="5" fill="#fff"/>
+  <circle cx="554" cy="562" r="5" fill="#fff"/>
+  <path d="M308 541c27-19 59-22 94-4" fill="none" stroke="#554b49" stroke-width="10" stroke-linecap="round"/>
+  <path d="M503 537c36-17 68-14 95 6" fill="none" stroke="#554b49" stroke-width="10" stroke-linecap="round"/>
+  <path d="M448 600c-7 43-25 78-14 102 8 18 34 18 52 5" fill="none" stroke="#b68474" stroke-width="10" stroke-linecap="round"/>
+  <path d="M365 771c56 39 115 39 173 0" fill="none" stroke="#b86168" stroke-width="17" stroke-linecap="round"/>
+  <path d="M318 641c38 12 73 11 110-1" fill="none" stroke="#d1aa9a" stroke-width="8" stroke-linecap="round" opacity=".34"/>
+  <path d="M500 642c38 10 72 9 108-2" fill="none" stroke="#d1aa9a" stroke-width="8" stroke-linecap="round" opacity=".34"/>
+  <path d="M310 720c42 52 79 81 137 88 62-6 104-38 145-91" fill="none" stroke="#bd9283" stroke-width="9" stroke-linecap="round" opacity=".58"/>
+  <g font-family="Arial, sans-serif" font-weight="700">
+    <path d="M265 572H156" stroke="#176bc5" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="143" cy="572" r="34" fill="#176bc5"/>
+    <text x="143" y="584" text-anchor="middle" font-size="34" fill="#fff">1</text>
+    <text x="45" y="532" font-size="25" fill="#176bc5">eye area</text>
+    <path d="M308 684H165" stroke="#176bc5" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="151" cy="684" r="34" fill="#176bc5"/>
+    <text x="151" y="696" text-anchor="middle" font-size="34" fill="#fff">2</text>
+    <text x="45" y="643" font-size="25" fill="#176bc5">midface</text>
+    <path d="M598 734h144" stroke="#176bc5" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="759" cy="734" r="34" fill="#176bc5"/>
+    <text x="759" y="746" text-anchor="middle" font-size="34" fill="#fff">3</text>
+    <text x="687" y="692" font-size="25" fill="#176bc5">jawline</text>
+    <path d="M602 635h114" stroke="#176bc5" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="733" cy="635" r="34" fill="#176bc5"/>
+    <text x="733" y="647" text-anchor="middle" font-size="34" fill="#fff">4</text>
+    <text x="676" y="594" font-size="25" fill="#176bc5">skin</text>
+  </g>
+  <text x="450" y="1025" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#34506f">DEMO ANNOTATED</text>
+  <text x="450" y="1072" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" fill="#728096">synthetic placeholder, no real person</text>
+</svg>

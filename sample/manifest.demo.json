@@ -1,0 +1,78 @@
+{
+  "client_label": "DEMO",
+  "label": "AI 美学升级报告｜脱敏演示",
+  "title": "状态更亮，轮廓更干净",
+  "subtitle": "无真人隐私风险的合成 demo，用于验证安装与渲染链路",
+  "visual_age": "Demo",
+  "visual_age_note": "合成占位图，仅用于技术自检，不代表真实客户效果。",
+  "before_image": "demo-inputs/demo-before.svg",
+  "effect_image": "demo-inputs/demo-after-clean.svg",
+  "after_image": "demo-inputs/demo-after-annotated.svg",
+  "diagnosis": [
+    {
+      "title": "眼周疲态示例",
+      "body": "演示用占位描述：眼周明亮度和精神感可作为沟通入口。"
+    },
+    {
+      "title": "面中支撑示例",
+      "body": "演示用占位描述：面中饱满度会影响整体柔和度。"
+    },
+    {
+      "title": "轮廓线示例",
+      "body": "演示用占位描述：下颌缘清晰度影响精致感。"
+    },
+    {
+      "title": "肤质气色示例",
+      "body": "演示用占位描述：肤色均匀和通透感适合作为加分项。"
+    }
+  ],
+  "project_mappings": [
+    {
+      "label": "眼周提亮",
+      "project": "眼周管理 / 胶原眼周方向",
+      "solves": "疲态、暗沉、眼神弱",
+      "details": ["眼神更明亮", "精神感更强"]
+    },
+    {
+      "label": "面中支撑",
+      "project": "面中支撑 / 鼻基底 / 法令纹联合设计",
+      "solves": "面中扁平、疲态感",
+      "details": ["中面部更柔和", "法令阴影更弱"]
+    },
+    {
+      "label": "轮廓收紧",
+      "project": "轮廓管理 / 紧致提升方向",
+      "solves": "下颌缘松散、脸型不清晰",
+      "details": ["轮廓更干净", "侧脸线条更顺"]
+    },
+    {
+      "label": "肤质焕亮",
+      "project": "水光 / 光子 / 屏障修复方向",
+      "solves": "肤色不均、通透度弱",
+      "details": ["肤色更均匀", "整体更有光泽"]
+    }
+  ],
+  "design_thinking": {
+    "goal": "用无真人身份风险的合成图，验证报告脚本、模板和资产复制流程是否完整。",
+    "path": "先渲染 Before/After 主视觉，再生成项目映射、设计思路和优先级建议。",
+    "result": "collaborator 不准备客户照片，也能确认仓库安装成功、manifest 可读取、报告 HTML 可生成。"
+  },
+  "advice": [
+    {
+      "title": "建议一：先验证环境",
+      "why": "第一次拿到仓库时，先确认 Python 依赖、脚本编译和 demo manifest 都能跑通。",
+      "direction": "运行 scripts/self_check.py，看到 report-v2.html 后再接真实客户素材。"
+    },
+    {
+      "title": "建议二：再替换客户素材",
+      "why": "demo 只证明技术链路正常，真实交付仍要换成客户原图、AI 效果图和标记图。",
+      "direction": "复制 sample/manifest.example.json，填入本机绝对路径或相对路径。"
+    },
+    {
+      "title": "建议三：保留隐私边界",
+      "why": "客户人脸、联系方式、报告截图都属于敏感材料，不应提交到 GitHub。",
+      "direction": "真实输出放在本机 outputs/ 或私有交付目录，提交前执行 git status 检查。"
+    }
+  ],
+  "footer": "这是合成 demo，只用于安装自检；正式报告需使用客户授权素材，并以医生面诊评估为准。"
+}

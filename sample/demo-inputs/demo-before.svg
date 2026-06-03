@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img" aria-label="Synthetic non-identifiable before portrait placeholder">
+  <rect width="900" height="1200" fill="#eef3f8"/>
+  <rect x="115" y="104" width="670" height="992" rx="42" fill="#fbfdff" stroke="#cfdae8" stroke-width="4"/>
+  <ellipse cx="450" cy="755" rx="236" ry="250" fill="#d9bda9"/>
+  <path d="M260 456c42-130 133-206 193-206 93 0 183 71 218 203 26 98-5 214-51 296-46 83-106 129-171 129-65 0-124-45-170-127-48-84-52-199-19-295z" fill="#e5c8b4" stroke="#8d6f61" stroke-width="8"/>
+  <path d="M267 506c15-137 88-250 189-250 94 0 173 102 186 250-35-72-98-109-186-109-88 0-153 37-189 109z" fill="#3e3837"/>
+  <path d="M280 500c47-29 99-45 175-45 80 0 131 16 173 47" fill="none" stroke="#2f2a29" stroke-width="44" stroke-linecap="round"/>
+  <ellipse cx="347" cy="571" rx="44" ry="20" fill="#fff"/>
+  <ellipse cx="548" cy="571" rx="44" ry="20" fill="#fff"/>
+  <circle cx="348" cy="573" r="16" fill="#3b4757"/>
+  <circle cx="548" cy="573" r="16" fill="#3b4757"/>
+  <path d="M309 543c26-19 57-22 91-4" fill="none" stroke="#5b504d" stroke-width="10" stroke-linecap="round"/>
+  <path d="M505 539c35-17 66-14 92 6" fill="none" stroke="#5b504d" stroke-width="10" stroke-linecap="round"/>
+  <path d="M448 602c-8 46-27 82-16 108 8 19 35 19 54 6" fill="none" stroke="#b48776" stroke-width="11" stroke-linecap="round"/>
+  <path d="M367 775c55 38 112 39 169 0" fill="none" stroke="#9f5f63" stroke-width="15" stroke-linecap="round"/>
+  <path d="M305 642c44 18 83 19 124 3" fill="none" stroke="#be9687" stroke-width="10" stroke-linecap="round" opacity=".55"/>
+  <path d="M496 646c42 13 80 11 117-4" fill="none" stroke="#be9687" stroke-width="10" stroke-linecap="round" opacity=".55"/>
+  <path d="M314 720c40 58 76 89 134 95 63-5 103-40 143-98" fill="none" stroke="#c89f8e" stroke-width="12" stroke-linecap="round" opacity=".7"/>
+  <circle cx="335" cy="666" r="10" fill="#ad7b70" opacity=".45"/>
+  <circle cx="575" cy="664" r="10" fill="#ad7b70" opacity=".45"/>
+  <text x="450" y="1025" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#44546a">DEMO BEFORE</text>
+  <text x="450" y="1072" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" fill="#728096">synthetic placeholder, no real person</text>
+</svg>

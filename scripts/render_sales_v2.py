@@ -29,10 +29,19 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return data
 
 
-def copy_asset(src_value: str | None, assets_dir: Path, fallback_name: str) -> str:
+def resolve_input_path(src_value: str | None, base_dir: Path) -> Path | None:
     if not src_value:
+        return None
+    src = Path(os.path.expanduser(src_value))
+    if not src.is_absolute():
+        src = base_dir / src
+    return src.resolve()
+
+
+def copy_asset(src_value: str | None, assets_dir: Path, fallback_name: str, base_dir: Path) -> str:
+    src = resolve_input_path(src_value, base_dir)
+    if not src:
         return ""
-    src = Path(os.path.expanduser(src_value)).resolve()
     if not src.exists():
         raise SystemExit(f"Image not found: {src}")
     suffix = src.suffix.lower() or ".png"
@@ -47,14 +56,14 @@ def copy_asset(src_value: str | None, assets_dir: Path, fallback_name: str) -> s
     return f"assets/{dest_name}"
 
 
-def crop_asset(src_value: str | None, assets_dir: Path, box: list[Any] | None, name: str) -> str:
-    if not src_value:
+def crop_asset(src_value: str | None, assets_dir: Path, box: list[Any] | None, name: str, base_dir: Path) -> str:
+    src = resolve_input_path(src_value, base_dir)
+    if not src:
         return ""
-    src = Path(os.path.expanduser(src_value)).resolve()
     if not src.exists():
         raise SystemExit(f"Image not found for crop: {src}")
     if not box or len(box) != 4:
-        return copy_asset(str(src), assets_dir, name)
+        return copy_asset(str(src), assets_dir, name, base_dir)
     im = Image.open(src).convert("RGB")
     w, h = im.size
     x1, y1, x2, y2 = [float(v) for v in box]
@@ -345,22 +354,24 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--no-screenshot", action="store_true", help="Only write HTML/assets, skip PNG export.")
     args = parser.parse_args(argv)
 
-    manifest = load_manifest(args.manifest)
+    manifest_path = args.manifest.expanduser().resolve()
+    manifest = load_manifest(manifest_path)
+    manifest_dir = manifest_path.parent
     data = merged(manifest)
     out_dir = args.out.expanduser().resolve()
     assets_dir = out_dir / "assets"
     out_dir.mkdir(parents=True, exist_ok=True)
     assets_dir.mkdir(parents=True, exist_ok=True)
 
-    before = copy_asset(data.get("before_image"), assets_dir, "before")
-    effect = copy_asset(data.get("effect_image") or data.get("ai_effect_image"), assets_dir, "effect")
-    after = copy_asset(data.get("after_image"), assets_dir, "after")
+    before = copy_asset(data.get("before_image"), assets_dir, "before", manifest_dir)
+    effect = copy_asset(data.get("effect_image") or data.get("ai_effect_image"), assets_dir, "effect", manifest_dir)
+    after = copy_asset(data.get("after_image"), assets_dir, "after", manifest_dir)
     if not before or not after:
         raise SystemExit("Manifest requires before_image and after_image.")
 
     project_images = []
     for idx, item in enumerate(data["project_mappings"][:5], start=1):
-        project_images.append(crop_asset(data.get("after_image"), assets_dir, item.get("crop_box"), f"project-{idx}"))
+        project_images.append(crop_asset(data.get("after_image"), assets_dir, item.get("crop_box"), f"project-{idx}", manifest_dir))
 
     html_path = out_dir / "report-v2.html"
     html_path.write_text(render_html(data, before, after, project_images), encoding="utf-8")

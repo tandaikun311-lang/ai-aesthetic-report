@@ -57,7 +57,12 @@ def validate_repo(root: Path) -> None:
         "install.sh",
         "uninstall.sh",
         "sample/manifest.example.json",
+        "sample/manifest.demo.json",
+        "sample/demo-inputs/demo-before.svg",
+        "sample/demo-inputs/demo-after-clean.svg",
+        "sample/demo-inputs/demo-after-annotated.svg",
         "skill/SKILL.md",
+        "scripts/self_check.py",
         "scripts/render_sales_v2.py",
     ]
     for item in required:
@@ -90,6 +95,7 @@ def validate_repo(root: Path) -> None:
 
     py_compile.compile(str(root / "scripts/render_report.py"), doraise=True)
     py_compile.compile(str(root / "scripts/render_sales_v2.py"), doraise=True)
+    py_compile.compile(str(root / "scripts/self_check.py"), doraise=True)
     ok("render scripts compile")
 
     if importlib.util.find_spec("PIL") is None:

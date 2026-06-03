@@ -19,6 +19,40 @@
 | `templates/` | 网资沟通文案和跟进表模板 |
 | `docs/` | 迁移说明、项目填写入口、参考图学习记录 |
 | `sample/manifest.example.json` | 示例 manifest，不包含真实图片 |
+| `sample/manifest.demo.json` | 可直接跑通的脱敏 demo manifest |
+| `sample/demo-inputs/` | 合成占位图，不含真实人脸或客户隐私 |
+
+## 3 分钟验证流程
+
+collaborator 拿到仓库后，不需要准备客户照片，先跑脱敏 demo 验证安装成功：
+
+```bash
+cd ai-aesthetic-report
+bash install.sh
+~/.local/bin/face-report-v2 \
+  --manifest sample/manifest.demo.json \
+  --out outputs/demo-install-check \
+  --no-screenshot
+open outputs/demo-install-check/report-v2.html
+```
+
+看到报告 HTML 后，说明安装目录、命令行入口、manifest 读取、素材复制和 HTML 渲染已跑通。
+
+也可以先不安装，只验证当前仓库：
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 scripts/self_check.py
+open outputs/self-check-demo/report-v2.html
+```
+
+如果要同时导出 `report-v2.png`，先安装 Playwright 和浏览器，再运行：
+
+```bash
+python3 -m pip install playwright
+python3 -m playwright install chromium
+python3 scripts/self_check.py --with-screenshot
+```
 
 ## 下载安装到直接使用
 
@@ -51,7 +85,7 @@ bash install.sh
 python3 -m pip install -r requirements.txt
 ```
 
-复制示例 manifest：
+复制真实项目示例 manifest：
 
 ```bash
 cp sample/manifest.example.json /tmp/manifest.json
@@ -67,6 +101,8 @@ python3 scripts/render_sales_v2.py \
 
 输出目录会生成 `report-v2.html`、`report-v2.png` 和 `assets/`。PDF 不作为默认交付。
 
+如果只是验证脚本，不想安装 Playwright 或导出 PNG，可以加 `--no-screenshot`，先检查 `report-v2.html`。
+
 ## 默认执行标准
 
 - 必须先生成客户 AI 效果图，不能用原图充当 After。
@@ -78,4 +114,4 @@ python3 scripts/render_sales_v2.py \
 
 ## 隐私规则
 
-本仓库默认 `.gitignore` 会忽略常见图片格式，避免误提交客户人脸。如果要放公开示例，请使用无真人身份风险的合成图片，并确认有权发布。
+本仓库默认 `.gitignore` 会忽略常见图片格式，避免误提交客户人脸。当前 `sample/demo-inputs/` 使用的是 SVG 合成占位图，不对应任何真实人物，只用于安装和渲染自检。
