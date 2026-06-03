@@ -18,6 +18,7 @@
 | `scripts/` | HTML/PNG 报告渲染脚本 |
 | `templates/` | 网资沟通文案和跟进表模板 |
 | `docs/` | 迁移说明、项目填写入口、参考图学习记录 |
+| `COLLABORATOR_QUICKSTART.md` | collaborator 3 分钟验收说明 |
 | `sample/manifest.example.json` | 示例 manifest，不包含真实图片 |
 | `sample/manifest.demo.json` | 可直接跑通的脱敏 demo manifest |
 | `sample/demo-inputs/` | 合成占位图，不含真实人脸或客户隐私 |
