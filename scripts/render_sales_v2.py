@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import logging
 import os
 import shutil
 import sys
@@ -14,6 +15,41 @@ from typing import Any
 
 from PIL import Image
 
+logger = logging.getLogger("face_report")
+
+
+def find_browser() -> str | None:
+    """Locate a Chromium/Chrome executable across platforms.
+
+    Resolution order:
+    1. BROWSER_PATH environment variable (explicit override).
+    2. Common executable names on PATH (chromium, chrome, etc.).
+    3. Well-known install locations on macOS / Windows.
+    Returns None so Playwright can fall back to its bundled browser.
+    """
+    override = os.environ.get("BROWSER_PATH")
+    if override:
+        if Path(override).exists():
+            return override
+        logger.warning("BROWSER_PATH=%s not found, falling back to auto-detect.", override)
+
+    for name in ("chromium", "chromium-browser", "google-chrome", "google-chrome-stable", "chrome"):
+        found = shutil.which(name)
+        if found:
+            return found
+
+    candidates = [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "/Applications/Chromium.app/Contents/MacOS/Chromium",
+        "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+    ]
+    for path in candidates:
+        if Path(path).exists():
+            return path
+    return None
+
 
 def esc(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
@@ -21,9 +57,15 @@ def esc(value: Any) -> str:
 
 def load_manifest(path: Path) -> dict[str, Any]:
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:  # noqa: BLE001
-        raise SystemExit(f"Failed to read manifest: {exc}") from exc
+        raw = path.read_text(encoding="utf-8")
+    except FileNotFoundError as exc:
+        raise SystemExit(f"Manifest not found: {path}") from exc
+    except OSError as exc:
+        raise SystemExit(f"Failed to read manifest {path}: {exc}") from exc
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"Manifest is not valid JSON ({path}): {exc}") from exc
     if not isinstance(data, dict):
         raise SystemExit("Manifest must be a JSON object.")
     return data
@@ -331,13 +373,19 @@ def render_entry(before: str, effect: str, after: str) -> str:
 def screenshot_png(html_path: Path, png_path: Path) -> None:
     try:
         from playwright.sync_api import sync_playwright
-    except Exception as exc:  # noqa: BLE001
-        raise SystemExit("Playwright is required for PNG export. Use --no-screenshot to skip.") from exc
+    except ImportError as exc:
+        raise SystemExit(
+            "Playwright is required for PNG export. Install it with "
+            "`pip install playwright && playwright install chromium`, or use --no-screenshot to skip."
+        ) from exc
 
-    chrome = Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+    browser_path = find_browser()
     launch_kwargs: dict[str, Any] = {"headless": True}
-    if chrome.exists():
-        launch_kwargs["executable_path"] = str(chrome)
+    if browser_path:
+        logger.info("Using browser for screenshot: %s", browser_path)
+        launch_kwargs["executable_path"] = browser_path
+    else:
+        logger.info("No system browser found; using Playwright's bundled Chromium.")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(**launch_kwargs)
@@ -345,6 +393,7 @@ def screenshot_png(html_path: Path, png_path: Path) -> None:
         page.goto(html_path.as_uri(), wait_until="networkidle")
         page.locator(".page").screenshot(path=str(png_path))
         browser.close()
+    logger.info("Wrote PNG: %s", png_path)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -352,9 +401,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--no-screenshot", action="store_true", help="Only write HTML/assets, skip PNG export.")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Print detailed progress logs.")
     args = parser.parse_args(argv)
 
+    logging.basicConfig(
+        level=logging.INFO if args.verbose else logging.WARNING,
+        format="%(levelname)s %(message)s",
+    )
+
     manifest_path = args.manifest.expanduser().resolve()
+    logger.info("Loading manifest: %s", manifest_path)
     manifest = load_manifest(manifest_path)
     manifest_dir = manifest_path.parent
     data = merged(manifest)
@@ -375,8 +431,10 @@ def main(argv: list[str] | None = None) -> int:
 
     html_path = out_dir / "report-v2.html"
     html_path.write_text(render_html(data, before, after, project_images), encoding="utf-8")
+    logger.info("Wrote HTML report: %s", html_path)
     entry_path = out_dir / "00_交付入口.html"
     entry_path.write_text(render_entry(before, effect, after), encoding="utf-8")
+    logger.info("Wrote delivery entry page: %s", entry_path)
 
     if not args.no_screenshot:
         screenshot_png(html_path, out_dir / "report-v2.png")

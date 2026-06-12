@@ -1,2 +1,7 @@
-Pillow>=10.0.0
+# 核心依赖：报告图片裁剪与处理
+# 锁定主版本，避免依赖漂移导致脚本突然失效。
+Pillow>=10.0,<12
 
+# 可选依赖（按需安装）：
+#   PNG 截图：pip install "playwright>=1.40,<2" && playwright install chromium
+#   含四图沟通总表 docx/xlsx：pip install "python-docx>=1.0,<2" "openpyxl>=3.1,<4"

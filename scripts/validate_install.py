@@ -32,6 +32,7 @@ def validate_common(root: Path) -> None:
         "references/report-spec.md",
         "scripts/render_report.py",
         "scripts/render_sales_v2.py",
+        "scripts/build_handoff_sheet.py",
         "templates/网资沟通文案_复制即用版.md",
         "templates/网资沟通文案_复制即用版.docx",
         "templates/网资咨询师承接跟进表_详细版.md",
@@ -42,6 +43,7 @@ def validate_common(root: Path) -> None:
 
     py_compile.compile(str(root / "scripts/render_report.py"), doraise=True)
     py_compile.compile(str(root / "scripts/render_sales_v2.py"), doraise=True)
+    py_compile.compile(str(root / "scripts/build_handoff_sheet.py"), doraise=True)
     ok("render scripts compile")
 
     if importlib.util.find_spec("PIL") is None:
@@ -85,6 +87,7 @@ def validate_repo(root: Path) -> None:
         "skill/references/report-spec.md",
         "scripts/render_report.py",
         "scripts/render_sales_v2.py",
+        "scripts/build_handoff_sheet.py",
         "templates/网资沟通文案_复制即用版.md",
         "templates/网资沟通文案_复制即用版.docx",
         "templates/网资咨询师承接跟进表_详细版.md",
@@ -95,6 +98,7 @@ def validate_repo(root: Path) -> None:
 
     py_compile.compile(str(root / "scripts/render_report.py"), doraise=True)
     py_compile.compile(str(root / "scripts/render_sales_v2.py"), doraise=True)
+    py_compile.compile(str(root / "scripts/build_handoff_sheet.py"), doraise=True)
     py_compile.compile(str(root / "scripts/self_check.py"), doraise=True)
     ok("render scripts compile")
 

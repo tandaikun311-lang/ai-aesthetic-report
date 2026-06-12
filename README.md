@@ -104,6 +104,36 @@ python3 scripts/render_sales_v2.py \
 
 如果只是验证脚本，不想安装 Playwright 或导出 PNG，可以加 `--no-screenshot`，先检查 `report-v2.html`。
 
+## 生成网资沟通总表（含四图）
+
+报告渲染完成后，可以一键把四张图（原图 / 客户 AI 效果图 / 效果标记图 / 报告图）和话术拼成一张网资沟通总表：
+
+```bash
+python3 scripts/build_handoff_sheet.py \
+  --manifest /tmp/manifest.json \
+  --report-dir /Users/apple/Downloads/codex/任务输出/面诊报告_测试 \
+  --out /Users/apple/Downloads/codex/任务输出/面诊报告_测试/handoff \
+  --docx --xlsx
+```
+
+- 默认输出可打印的 HTML 总表，可直接在浏览器打开、另存 PDF。
+- `--docx` 导出可编辑 Word（需 `pip install python-docx`）。
+- `--xlsx` 导出话术表 Excel（需 `pip install openpyxl`）。
+- `--screenshot` 导出 PNG（需 Playwright）。
+- `--report-dir` 指向 `render_sales_v2.py` 的输出目录，用于带上 `report-v2.png` 作为第四张图。
+- 话术默认按项目映射自动生成，也可在 manifest 里用 `handoff` 字段自定义。
+
+## 开发与测试
+
+锁定依赖与可选依赖在 `pyproject.toml` 中声明。运行单元测试：
+
+```bash
+python3 -m pip install "pytest>=8,<10" "python-docx>=1.0,<2" "openpyxl>=3.1,<4"
+python3 -m pytest -q
+```
+
+每次推送会触发 `.github/workflows/ci.yml`：布局校验、单元测试、demo 自检渲染、隐私扫描（确保没有图片或密钥被提交）。
+
 ## 默认执行标准
 
 - 必须先生成客户 AI 效果图，不能用原图充当 After。

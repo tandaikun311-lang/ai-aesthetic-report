@@ -60,6 +60,26 @@ def main() -> int:
     if "状态更亮，轮廓更干净" not in html:
         raise SystemExit("[FAIL] demo report title not found in rendered HTML")
     print("[OK] demo manifest rendered successfully")
+
+    # Also exercise the handoff-sheet builder (HTML only, no optional deps required).
+    handoff_dir = out_dir / "handoff"
+    run(
+        [
+            sys.executable,
+            "scripts/build_handoff_sheet.py",
+            "--manifest",
+            "sample/manifest.demo.json",
+            "--out",
+            str(handoff_dir),
+        ],
+        repo,
+    )
+    handoff_html = handoff_dir / "网资沟通细节总表_含四图.html"
+    require(handoff_html)
+    if 'class="shot"' not in handoff_html.read_text(encoding="utf-8"):
+        raise SystemExit("[FAIL] handoff sheet missing image blocks")
+    print("[OK] handoff sheet rendered successfully")
+
     print(f"[DONE] open {out_dir / 'report-v2.html'}")
     return 0
 

@@ -55,12 +55,20 @@ set -euo pipefail
 EOF
 chmod +x "$BIN_DIR/face-report-basic"
 
+cat > "$BIN_DIR/face-report-handoff" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+"$TARGET_DIR/.venv/bin/python" "$TARGET_DIR/scripts/build_handoff_sheet.py" "\$@"
+EOF
+chmod +x "$BIN_DIR/face-report-handoff"
+
 "$TARGET_DIR/.venv/bin/python" "$ROOT_DIR/scripts/validate_install.py" --target "$TARGET_DIR"
 
 echo
 echo "安装完成。"
 echo "Codex skill: $TARGET_DIR"
 echo "命令行入口: $BIN_DIR/face-report-v2"
+echo "          : $BIN_DIR/face-report-handoff （生成含四图的网资沟通总表）"
 echo
 echo "如果终端提示找不到 face-report-v2，请执行："
 echo "export PATH=\"$BIN_DIR:\$PATH\""

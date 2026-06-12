@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-aesthetic-report"
+version = "1.1.0"
+description = "本机可执行的医美面部美学升级报告工作流：把客户正脸照片整理成原图、AI 效果图、效果标记图、报告图与网资沟通材料。"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "tandaikun311-lang" }]
+keywords = ["medical-aesthetics", "report", "rendering", "workflow"]
+dependencies = [
+    "Pillow>=10.0,<12",
+]
+
+[project.optional-dependencies]
+# PNG 截图导出
+screenshot = ["playwright>=1.40,<2"]
+# 含四图的网资沟通总表 docx/xlsx 生成
+handoff = ["python-docx>=1.0,<2", "openpyxl>=3.1,<4"]
+# 开发与测试
+dev = ["pytest>=8,<10", "ruff>=0.4"]
+
+[project.scripts]
+face-report-v2 = "scripts.render_sales_v2:main"
+
+[tool.setuptools]
+packages = []
+py-modules = []
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
