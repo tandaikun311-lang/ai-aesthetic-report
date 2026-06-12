@@ -9,13 +9,20 @@ Use this skill to turn one clear portrait into a Chinese aesthetic consultation 
 
 ## Required Business Knowledge
 
-Before generating a report for a medical-aesthetic business scenario, read these local knowledge-base files when available:
+Before generating a report for a medical-aesthetic business scenario, read these
+optional local knowledge-base files **if they exist on this machine**:
 
-- `/Users/apple/.openclaw/workspace/knowledge-base/02-产品体系/后端高客单/AI面诊调整点收费项目映射库.md`
-- `/Users/apple/.openclaw/workspace/knowledge-base/03-成交体系/门店成交/AI面诊报告沟通成交SOP.md`
-- `/Users/apple/.openclaw/workspace/knowledge-base/06-运营工具/文档排版风格/AI面诊报告设计升级规范.md`
+- `~/.openclaw/workspace/knowledge-base/02-产品体系/后端高客单/AI面诊调整点收费项目映射库.md`
+- `~/.openclaw/workspace/knowledge-base/03-成交体系/门店成交/AI面诊报告沟通成交SOP.md`
+- `~/.openclaw/workspace/knowledge-base/06-运营工具/文档排版风格/AI面诊报告设计升级规范.md`
 
-Use them to map every visible improvement in the AI After image to a project direction, a consultant explanation, and a next-step face-to-face consultation prompt.
+These are the original author's private business references (pricing maps, sales
+SOPs) and are NOT shipped with this repository. If they are missing — which is
+normal on a recipient's machine — skip them and rely on the report schema in
+`references/report-spec.md` plus the consultant materials in `templates/`. When
+present, use them to map every visible improvement in the AI After image to a
+project direction, a consultant explanation, and a next-step face-to-face
+consultation prompt.
 
 ## Operating Boundaries
 
@@ -24,7 +31,7 @@ Use them to map every visible improvement in the AI After image to a project dir
 - Prefer wording such as "观察到", "可关注", "可优化方向", "视觉上", "气质呈现" instead of "缺陷", "问题严重", "必须做".
 - Keep upgrades natural: preserve identity, face shape, pose, expression, skin texture, and ethnicity. Avoid plastic skin, exaggerated V-face, doll eyes, obvious surgery, or changing the person.
 - If the portrait appears to be a minor or the task requests sexualized beauty framing, stop and ask for a suitable adult, non-sexualized portrait.
-- Save final task artifacts under a clear descriptive folder on `/Users/apple/Desktop/`; do not prefix new folders with `新建文件夹`.
+- Save final task artifacts under a clear descriptive folder on `~/Desktop/` (or any output folder the user specifies); do not prefix new folders with `新建文件夹`.
 
 ## Workflow
 
@@ -130,9 +137,10 @@ Create a manifest after producing the AI After image:
 Run:
 
 ```bash
-python3 /Users/apple/.codex/skills/face-consultation-report/scripts/render_sales_v2.py \
+# 安装后可直接用 face-report-v2 命令；或调用安装目录下的脚本：
+python3 ~/.codex/skills/face-consultation-report/scripts/render_sales_v2.py \
   --manifest /abs/path/manifest.json \
-  --out /Users/apple/Desktop/面诊报告_YYYYMMDD-HHMM
+  --out ~/Desktop/面诊报告_YYYYMMDD-HHMM
 ```
 
 Open `00_交付入口.html` or `report-v2.png` to review. The script does not create PDF.

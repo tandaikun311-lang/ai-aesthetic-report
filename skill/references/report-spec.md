@@ -241,4 +241,4 @@ Default V2 project mapping:
 
 Keep final response concise:
 
-`做好了，产出在 /Users/apple/Desktop/面诊报告_YYYYMMDD-HHMM/，包含 00_交付入口.html / report-v2.png / report-v2.html / 原图与AI升级图。本报告是AI美学沟通参考，不是医学诊断。`
+`做好了，产出在 ~/Desktop/面诊报告_YYYYMMDD-HHMM/，包含 00_交付入口.html / report-v2.png / report-v2.html / 原图与AI升级图。本报告是AI美学沟通参考，不是医学诊断。`

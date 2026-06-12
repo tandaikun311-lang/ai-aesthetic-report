@@ -71,8 +71,9 @@ bash install.sh
 - Codex 技能：`~/.codex/skills/face-consultation-report`
 - V2 报告渲染命令：`~/.local/bin/face-report-v2`
 - 基础报告渲染命令：`~/.local/bin/face-report-basic`
+- 网资沟通总表命令：`~/.local/bin/face-report-handoff`
 
-当前仓库是私有仓库。别人要下载，需要你先在 GitHub 里添加 collaborator，或者把仓库改成 Public。
+本仓库目前是公开仓库，任何人都可以直接用上面的 `git clone` 命令下载安装，无需额外授权。注意：报告脚本和技能规则是公开的，但客户照片、AI 效果图、报告成品和内部定价/SOP 都不在仓库内，也不要提交进来（见 PRIVACY.md）。
 
 详细步骤看：
 
@@ -97,7 +98,7 @@ cp sample/manifest.example.json /tmp/manifest.json
 ```bash
 python3 scripts/render_sales_v2.py \
   --manifest /tmp/manifest.json \
-  --out /Users/apple/Downloads/codex/任务输出/面诊报告_测试
+  --out ~/Downloads/面诊报告_测试
 ```
 
 输出目录会生成 `report-v2.html`、`report-v2.png` 和 `assets/`。PDF 不作为默认交付。
