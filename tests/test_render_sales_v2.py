@@ -1,6 +1,7 @@
 """Unit tests for the V2 sales report renderer."""
 
 import json
+from pathlib import Path
 
 import pytest
 
@@ -35,6 +36,24 @@ def test_load_manifest_not_object(tmp_path):
     p.write_text("[1, 2, 3]", encoding="utf-8")
     with pytest.raises(SystemExit):
         r.load_manifest(p)
+
+
+def test_render_rejects_missing_clean_effect_without_creating_output(tmp_path):
+    manifest = tmp_path / "manifest.json"
+    case = json.loads((Path(__file__).resolve().parents[1] / "sample" / "manifest.demo.json").read_text(encoding="utf-8"))
+    case.pop("effect_image")
+    manifest.write_text(json.dumps(case), encoding="utf-8")
+    output = tmp_path / "report"
+    with pytest.raises(SystemExit, match="separate clean effect_image"):
+        r.main(["--manifest", str(manifest), "--out", str(output), "--no-screenshot"])
+    assert not output.exists()
+
+
+def test_render_rejects_generic_default_diagnosis(tmp_path):
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps({"before_image": "before.png", "effect_image": "effect.png", "after_image": "annotated.png"}), encoding="utf-8")
+    with pytest.raises(SystemExit, match="case-specific content"):
+        r.main(["--manifest", str(manifest), "--out", str(tmp_path / "report"), "--no-screenshot"])
 
 
 def test_defaults_has_core_keys():

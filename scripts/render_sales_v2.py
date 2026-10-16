@@ -121,8 +121,8 @@ def defaults() -> dict[str, Any]:
         "label": "AI 美学升级报告｜仅做参考",
         "title": "疲态下去，精致感上来",
         "subtitle": "保留本人五官，提升眼周、轮廓与气色",
-        "visual_age": "-5~7 岁",
-        "visual_age_note": "仅代表视觉状态参考，不构成医学效果承诺。",
+        "visual_age": "更精神、更清爽",
+        "visual_age_note": "仅代表 AI 视觉模拟，不构成医学效果承诺。",
         "diagnosis": [
             {"title": "眼周疲态", "body": "眼下暗沉与泪沟感明显，精神度被削弱。"},
             {"title": "面中支撑不足", "body": "苹果肌饱满度不够，面中立体感偏弱。"},
@@ -413,7 +413,13 @@ def main(argv: list[str] | None = None) -> int:
     logger.info("Loading manifest: %s", manifest_path)
     manifest = load_manifest(manifest_path)
     manifest_dir = manifest_path.parent
+    required_case_fields = ("title", "subtitle", "before_image", "after_image", "diagnosis", "project_mappings", "design_thinking", "advice")
+    missing_case_fields = [key for key in required_case_fields if not manifest.get(key)]
+    if missing_case_fields:
+        raise SystemExit("Manifest needs case-specific content: " + ", ".join(missing_case_fields))
     data = merged(manifest)
+    if not (data.get("effect_image") or data.get("ai_effect_image")):
+        raise SystemExit("Manifest requires a separate clean effect_image before rendering.")
     out_dir = args.out.expanduser().resolve()
     assets_dir = out_dir / "assets"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -422,8 +428,8 @@ def main(argv: list[str] | None = None) -> int:
     before = copy_asset(data.get("before_image"), assets_dir, "before", manifest_dir)
     effect = copy_asset(data.get("effect_image") or data.get("ai_effect_image"), assets_dir, "effect", manifest_dir)
     after = copy_asset(data.get("after_image"), assets_dir, "after", manifest_dir)
-    if not before or not after:
-        raise SystemExit("Manifest requires before_image and after_image.")
+    if not before or not effect or not after:
+        raise SystemExit("Manifest requires before_image, effect_image, and after_image as separate files.")
 
     project_images = []
     for idx, item in enumerate(data["project_mappings"][:5], start=1):

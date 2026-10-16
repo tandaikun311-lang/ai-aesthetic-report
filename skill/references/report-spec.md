@@ -214,7 +214,7 @@ When the goal is consultation conversion, upsell, project mapping, or “升单�
 - AI marked effect image: a separately generated or edited upgraded image with numbered medical-aesthetic callouts. Use this image inside the report when explaining adjustment points.
 - Project mapping panel: each row uses a small crop, one improvement label, the matching project direction, and the customer problem it solves.
 - Each project mapping should also include two concrete visual-detail lines, matching the premium annotated-image style, for example `眼周明亮有神 / 告别暗沉` or `填补流失容积 / 苹果肌饱满上提`.
-- Visual age card: use a bounded visual estimate such as `-5~7 岁`, plus a clear non-guarantee note.
+- Visual-impression card: use qualitative wording such as `更精神、更清爽`, plus a clear AI-simulation and non-guarantee note. Do not claim a numeric age reduction without a defensible basis.
 - Before and AI After must both show the complete face and enough upper body for comparison, not a cropped forehead or partial face. The image should still fill the comparison frame; avoid obvious empty side gutters. Mild top/bottom crop is acceptable only when it preserves face integrity and readable labels.
 - In V2 sales reports, the Before/After comparison is the main selling visual. The two image columns should take more than half of the main content width whenever possible; compress side panels before shrinking the comparison images.
 - Use `美学设计思路` for the bottom-left explanation card instead of `成交逻辑` in customer-facing reports. Explain `设计目标`, `视觉路径`, and `审美结果`.

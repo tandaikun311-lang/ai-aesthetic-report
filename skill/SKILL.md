@@ -31,7 +31,7 @@ consultation prompt.
 - Prefer wording such as "观察到", "可关注", "可优化方向", "视觉上", "气质呈现" instead of "缺陷", "问题严重", "必须做".
 - Keep upgrades natural: preserve identity, face shape, pose, expression, skin texture, and ethnicity. Avoid plastic skin, exaggerated V-face, doll eyes, obvious surgery, or changing the person.
 - If the portrait appears to be a minor or the task requests sexualized beauty framing, stop and ask for a suitable adult, non-sexualized portrait.
-- Save final task artifacts under a clear descriptive folder on `~/Desktop/` (or any output folder the user specifies); do not prefix new folders with `新建文件夹`.
+- Follow the user's requested output path and workspace rules. Otherwise use a descriptive folder under `~/Downloads/`; never save identifiable client material in this repository.
 
 ## Workflow
 
@@ -76,16 +76,19 @@ Archive rule: after every optimization or revision of this skill's reports, comm
    - Create an adjustment-to-project list. Each clear improvement must map to at least one project direction, for example: eye brightening -> eye-area management; tear trough softening -> eye-area filler/collagen/eye-bag evaluation; midface support -> midface support/regenerative/filler direction; jawline cleanup -> contour/tightening direction; skin glow -> skin booster/light-based treatment direction.
 
 3. **Generate the upgraded image**
-   - Use image editing/generation capability available in the environment. For Chinese portrait/poster work, prefer the local Jimeng path when available; for general faithful photo editing, use imagegen.
+   - Produce a clean `客户 AI 效果图` from the authorized portrait before adding any labels. Use an explicitly selectable `gpt-image-2` image-editing route with `quality=high` when available. Do not describe an automatic or unpinned image tool as a confirmed `gpt-image-2` run. If that route is unavailable, explain the limitation and obtain the user's choice before using another model.
+   - Inspect the source portrait first. Save the selected clean effect image separately and record the model, settings, source image, output path, and generation time in the private case folder. Never commit these records or images to GitHub.
+   - Do not substitute the original photo, a local retouch, a crop, or an annotated image for the clean AI effect image.
    - Prompt for a clearly visible medical-aesthetic upgrade, not a simple beauty filter: brighter eyes, softened tear troughs/eye bags, better midface support, softer nasolabial shadows, cleaner jawline, more luminous skin, healthier lips, and a refined high-end medical-aesthetic temperament.
-   - When the user wants sales/consultation material, prefer an AI After image with numbered medical-aesthetic callouts directly on the image.
+   - Derive the numbered `效果标记图` from the selected clean effect image. Check that labels are legible and do not cover key facial features.
    - Preserve identity and photo realism. Keep changes plausible and non-invasive.
 
 4. **Compose the report**
    - For customer-facing medical-aesthetic sales work, use `scripts/render_sales_v2.py`.
    - V2 must include and deliver in this order: `原图` -> `客户 AI 效果图` -> `效果标记图` -> `报告图` -> `沟通细节/网资表`.
-   - Use `before_image` for the original, optional `effect_image` for the clean customer-facing AI effect image, and `after_image` for the numbered/callout annotated effect image used inside the report.
-   - V2 must include: complete Before image, complete AI After image, adjustment labels/project mapping cards, visual age estimate, `美学设计思路`, and three prioritized recommendations with detailed reasons.
+   - Use `before_image` for the original, required `effect_image` for the clean customer-facing AI effect image, and `after_image` for the numbered/callout annotated effect image used inside the report.
+   - Write this client's own title, observed features, project directions, design thinking, and advice into the manifest. The renderer rejects missing case-specific fields; demo defaults must never become a real client's diagnosis.
+   - V2 must include: complete Before image, complete AI After image, adjustment labels/project mapping cards, a qualitative visual-impression note, `美学设计思路`, and three prioritized recommendations with detailed reasons. Do not invent numeric age reduction or clinical outcomes.
    - V2 layout must prioritize the Before/After images as the main selling visual: make the two portraits large and visually filled, compress side panels first, and avoid obvious empty gutters around the portraits.
    - Use customer-facing outcome titles such as `不换脸，也能明显变精致`; do not expose internal wording such as `每一个变美点都对应一个项目`.
    - Keep the main report visually clean. Put short project directions in the report; put detailed recommended projects and talk tracks in the paired `网资沟通文案_复制即用版` and `网资咨询师承接跟进表_详细版`.
@@ -96,6 +99,7 @@ Archive rule: after every optimization or revision of this skill's reports, comm
 5. **Return**
    - Show or provide the final report path.
    - Mention that it is an AI aesthetic visualization/report for communication reference, not a professional medical diagnosis.
+   - The skill produces a locally reviewed package. Publishing a report or portrait to a website is a separate, user-authorized action; do not publish it automatically.
    - Keep the response short unless the user asks for the full analysis text inline.
 
 ## Script Quick Start: V2 Sales Report
@@ -107,7 +111,7 @@ Create a manifest after producing the AI After image:
   "client_label": "03/30",
   "title": "疲态下去，精致感上来",
   "subtitle": "保留本人五官，提升眼周、轮廓与气色",
-  "visual_age": "-5~7 岁",
+  "visual_age": "更精神、更清爽",
   "before_image": "/abs/path/original.jpg",
   "effect_image": "/abs/path/ai-after-clean.png",
   "after_image": "/abs/path/ai-after-annotated.png",
@@ -140,7 +144,7 @@ Run:
 # 安装后可直接用 face-report-v2 命令；或调用安装目录下的脚本：
 python3 ~/.codex/skills/face-consultation-report/scripts/render_sales_v2.py \
   --manifest /abs/path/manifest.json \
-  --out ~/Desktop/面诊报告_YYYYMMDD-HHMM
+  --out /abs/path/面部美学升级报告_YYYYMMDD
 ```
 
 Open `00_交付入口.html` or `report-v2.png` to review. The script does not create PDF.

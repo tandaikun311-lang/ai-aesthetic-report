@@ -10,6 +10,8 @@
 
 本仓库只保存技能规则、渲染脚本、模板和说明文档。真实客户照片、AI 效果图、报告截图、含客户人脸的 Word/Excel 成品不要提交到 GitHub。
 
+**能力边界：**这是 Codex 辅助制作技能。它指导照片质检、AI 效果图、标记、文案、渲染、沟通资料与终检；渲染脚本不自动生成 AI 人像，也不自动发布到网站。正式客户报告需要有授权的照片、可用的图像编辑能力和人工复核。
+
 ## 目录
 
 | 路径 | 用途 |
@@ -87,18 +89,19 @@ bash install.sh
 python3 -m pip install -r requirements.txt
 ```
 
-复制真实项目示例 manifest：
+复制真实项目示例 manifest 到 Git 忽略的本机目录：
 
 ```bash
-cp sample/manifest.example.json /tmp/manifest.json
+mkdir -p outputs/客户报告
+cp sample/manifest.example.json outputs/客户报告/manifest.json
 ```
 
-把 `/tmp/manifest.json` 里的图片路径改成你本机客户图片路径后运行：
+把 `outputs/客户报告/manifest.json` 里的图片路径、标题、原图观察、项目方向、设计思路和三条建议改为该客户的实际内容。`effect_image` 必须是独立的干净 AI 效果图，`after_image` 是基于它制作的标记图。渲染器会拒绝缺少客户专属内容的 manifest，避免把示例诊断套给真人。然后运行：
 
 ```bash
 python3 scripts/render_sales_v2.py \
-  --manifest /tmp/manifest.json \
-  --out ~/Downloads/面诊报告_测试
+  --manifest outputs/客户报告/manifest.json \
+  --out outputs/客户报告/报告成品
 ```
 
 输出目录会生成 `report-v2.html`、`report-v2.png` 和 `assets/`。PDF 不作为默认交付。
@@ -111,9 +114,9 @@ python3 scripts/render_sales_v2.py \
 
 ```bash
 python3 scripts/build_handoff_sheet.py \
-  --manifest /tmp/manifest.json \
-  --report-dir /Users/apple/Downloads/codex/任务输出/面诊报告_测试 \
-  --out /Users/apple/Downloads/codex/任务输出/面诊报告_测试/handoff \
+  --manifest outputs/客户报告/manifest.json \
+  --report-dir outputs/客户报告/报告成品 \
+  --out outputs/客户报告/报告成品/handoff \
   --docx --xlsx
 ```
 
@@ -133,15 +136,17 @@ python3 -m pip install "pytest>=8,<10" "python-docx>=1.0,<2" "openpyxl>=3.1,<4"
 python3 -m pytest -q
 ```
 
-每次推送会触发 `.github/workflows/ci.yml`：布局校验、单元测试、demo 自检渲染、隐私扫描（确保没有图片或密钥被提交）。
+发布前在本机运行上述测试和 `python3 scripts/self_check.py`，并检查 `git status` 与待提交文件，确保不含真实客户素材或凭据。
 
 ## 默认执行标准
 
 - 必须先生成客户 AI 效果图，不能用原图充当 After。
+- 明确记录实际使用的图像模型与参数。需要锁定 `gpt-image-2` 时，应显式指定 `quality=high`；不能把自动模式说成已锁定模型。
 - 客户 AI 效果图要有明显变化，但保留本人身份。
 - 效果标记图要说明哪里变了，标注点能回到项目方向。
 - 报告图主图要铺满，不留明显灰白边。
 - 沟通文档要包含四张图、话术表、异议处理、预约面诊和复购维护。
+- 不编造减龄岁数或医疗效果；视觉变化只作审美沟通参考。
 - 所有内容仅做美学沟通参考，不构成医学诊断、治疗建议或效果承诺。
 
 ## 隐私规则
