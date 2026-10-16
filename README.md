@@ -8,6 +8,8 @@
 4. 报告图
 5. 网资沟通文案与承接跟进表
 
+**标准模板：**用户选定的 2026-05-27 原版 V2 报告。`scripts/render_sales_v2.py` 保留其页面 CSS 和四列主区结构；新案例只替换照片与经过本案核对的文案。版式和验收点见 [`skill/references/canonical-v2-layout.md`](skill/references/canonical-v2-layout.md)。仓库用合成占位图演示版式，不包含真人版标准报告。
+
 本仓库只保存技能规则、渲染脚本、模板和说明文档。真实客户照片、AI 效果图、报告截图、含客户人脸的 Word/Excel 成品不要提交到 GitHub。
 
 **能力边界：**这是 Codex 辅助制作技能。它指导照片质检、AI 效果图、标记、文案、渲染、沟通资料与终检；渲染脚本不自动生成 AI 人像，也不自动发布到网站。正式客户报告需要有授权的照片、可用的图像编辑能力和人工复核。
@@ -24,6 +26,10 @@
 | `sample/manifest.example.json` | 示例 manifest，不包含真实图片 |
 | `sample/manifest.demo.json` | 可直接跑通的脱敏 demo manifest |
 | `sample/demo-inputs/` | 合成占位图，不含真实人脸或客户隐私 |
+
+## 发给协作者
+
+把本仓库链接和 [`COLLABORATOR_QUICKSTART.md`](COLLABORATOR_QUICKSTART.md) 一起发给获得你授权的使用者。对方可先用合成 demo 验证版式，再在自己的私有目录处理客户照片。仓库是公开可访问的；使用、复制和再分发范围以 [`LICENSE`](LICENSE) 为准。若准备允许任何人自由复用或再分发，需要另行确定并更新许可证。
 
 ## 3 分钟验证流程
 
@@ -75,7 +81,14 @@ bash install.sh
 - 基础报告渲染命令：`~/.local/bin/face-report-basic`
 - 网资沟通总表命令：`~/.local/bin/face-report-handoff`
 
-本仓库目前是公开仓库，任何人都可以直接用上面的 `git clone` 命令下载安装，无需额外授权。注意：报告脚本和技能规则是公开的，但客户照片、AI 效果图、报告成品和内部定价/SOP 都不在仓库内，也不要提交进来（见 PRIVACY.md）。
+需要通过安装后的 `face-report-v2` 命令导出 PNG 时，把 Playwright 装到技能自己的虚拟环境，并安装 Chromium：
+
+```bash
+~/.codex/skills/face-consultation-report/.venv/bin/python -m pip install playwright
+~/.codex/skills/face-consultation-report/.venv/bin/python -m playwright install chromium
+```
+
+本仓库目前公开可访问，但使用授权仍以 `LICENSE` 为准。客户照片、AI 效果图、报告成品和内部定价/SOP 都不在仓库内，也不要提交进来（见 `PRIVACY.md`）。
 
 详细步骤看：
 
@@ -104,7 +117,7 @@ python3 scripts/render_sales_v2.py \
   --out outputs/客户报告/报告成品
 ```
 
-输出目录会生成 `report-v2.html`、`report-v2.png` 和 `assets/`。PDF 不作为默认交付。
+已安装 Playwright 和 Chromium 时，输出目录会生成 `report-v2.html`、`report-v2.png` 和 `assets/`。PDF 不作为默认交付。
 
 如果只是验证脚本，不想安装 Playwright 或导出 PNG，可以加 `--no-screenshot`，先检查 `report-v2.html`。
 

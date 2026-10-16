@@ -1,12 +1,12 @@
 # Face Consultation Report Spec
 
-Use this reference when preparing a Chinese AI facial consultation report.
+Use this reference for case-specific wording and project mapping. The default report is the original V2 layout in `canonical-v2-layout.md`, rendered with `scripts/render_sales_v2.py`. The older general-report blocks below apply only when a user expressly requests that older format.
 
-## Output Shape
+## Older General Report Layout (Opt-in Only)
 
 Default deliverable:
 
-- 16:9 premium white-blue report page.
+- 16:9 premium white-blue report page for the older `render_report.py` only. The standard V2 has a 1600px content width and variable height.
 - Center before/after portrait comparison.
 - Left column: "问题诊断 DIAGNOSIS".
 - Right-middle column: "美学解决方案 SOLUTION".
@@ -17,7 +17,7 @@ Default deliverable:
 For sales-oriented medical-aesthetic reports, the core deliverable is a folder containing:
 
 - `original.jpg` or `assets/before.*`: original customer photo.
-- `ai-effect-clean.*` or `assets/effect.*`: clean customer-facing AI effect image without dense explanation, when available.
+- `ai-effect-clean.*` or `assets/effect.*`: required clean customer-facing AI effect image without dense explanation.
 - `upgraded-ai-medical-annotated.png` or `assets/after.*`: AI effect image with numbered adjustment labels.
 - `report-v2.png`: customer-facing V2 report image.
 - `report-v2.html`: editable HTML source.
@@ -35,7 +35,7 @@ Required delivery order:
 4. 报告图
 5. 沟通细节 / 网资咨询师承接表 / SOP
 
-## Required Report Sections
+## Older General Report Sections (Opt-in Only)
 
 ### Header
 
@@ -205,7 +205,7 @@ When using customer-provided Before/After reference sets, follow these rules for
 
 ## Sales Report V2 Required Blocks
 
-When the goal is consultation conversion, upsell, project mapping, or “升单赚钱”, use the sales-facing V2 report structure:
+Use the sales-facing V2 structure by default for every new report. Its fixed layout is in `canonical-v2-layout.md`:
 
 - Header: `AI 美学升级报告｜仅做参考`.
 - Main title: customer-facing outcome language, not internal project-mapping language. Avoid titles like `每一个变美点，都对应一个项目`. Prefer titles such as `疲态下去，精致感上来`, `不换脸，也能明显变精致`, or `保留本人五官，升级整体状态`.
@@ -241,4 +241,4 @@ Default V2 project mapping:
 
 Keep final response concise:
 
-`做好了，产出在 ~/Desktop/面诊报告_YYYYMMDD-HHMM/，包含 00_交付入口.html / report-v2.png / report-v2.html / 原图与AI升级图。本报告是AI美学沟通参考，不是医学诊断。`
+`做好了，产出在指定的私有项目目录，包含 00_交付入口.html / report-v2.png / report-v2.html / 原图与AI升级图。本报告是AI美学沟通参考，不是医学诊断。`

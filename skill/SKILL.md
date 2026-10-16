@@ -5,7 +5,7 @@ description: Create AI facial consultation and aesthetic upgrade reports from a 
 
 # Face Consultation Report
 
-Use this skill to turn one clear portrait into a Chinese aesthetic consultation deliverable: original photo, AI upgraded effect image, face/feature observations, project mapping, customer-facing design thinking, and a premium report image.
+Use this skill to turn one clear portrait into a Chinese aesthetic consultation deliverable: original photo, AI upgraded effect image, face/feature observations, project mapping, customer-facing design thinking, and a premium report image. The default visual standard is the original 2026-05-27 V2 report layout, reproduced by `scripts/render_sales_v2.py` and specified in `references/canonical-v2-layout.md`. Keep its composition when preparing a new case; replace the case content and portraits.
 
 ## Required Business Knowledge
 
@@ -72,7 +72,7 @@ Archive rule: after every optimization or revision of this skill's reports, comm
 2. **Create visual analysis**
    - Analyze visible aesthetics only: eye vitality, periocular dullness, eye shape openness, nose proportion, lip contour/fullness, face contour, skin texture/evenness, overall temperament.
    - Separate "problem diagnosis" from "solution direction"; keep both concise and non-alarming.
-   - Use the section schema in `references/report-spec.md` when drafting report copy.
+   - Use the V2 section schema in `references/report-spec.md` and the fixed layout in `references/canonical-v2-layout.md` when drafting report copy.
    - Create an adjustment-to-project list. Each clear improvement must map to at least one project direction, for example: eye brightening -> eye-area management; tear trough softening -> eye-area filler/collagen/eye-bag evaluation; midface support -> midface support/regenerative/filler direction; jawline cleanup -> contour/tightening direction; skin glow -> skin booster/light-based treatment direction.
 
 3. **Generate the upgraded image**
@@ -89,7 +89,7 @@ Archive rule: after every optimization or revision of this skill's reports, comm
    - Use `before_image` for the original, required `effect_image` for the clean customer-facing AI effect image, and `after_image` for the numbered/callout annotated effect image used inside the report.
    - Write this client's own title, observed features, project directions, design thinking, and advice into the manifest. The renderer rejects missing case-specific fields; demo defaults must never become a real client's diagnosis.
    - V2 must include: complete Before image, complete AI After image, adjustment labels/project mapping cards, a qualitative visual-impression note, `美学设计思路`, and three prioritized recommendations with detailed reasons. Do not invent numeric age reduction or clinical outcomes.
-   - V2 layout must prioritize the Before/After images as the main selling visual: make the two portraits large and visually filled, compress side panels first, and avoid obvious empty gutters around the portraits.
+   - Match the canonical V2 composition: top title and qualitative visual note; four original-photo observations at left; two large Before/After columns; up to five project mappings at right; bottom design thinking and exactly three advice cards. Keep the renderer's original grid, spacing, color, and typography. Do not redesign the page for each client.
    - Use customer-facing outcome titles such as `不换脸，也能明显变精致`; do not expose internal wording such as `每一个变美点都对应一个项目`.
    - Keep the main report visually clean. Put short project directions in the report; put detailed recommended projects and talk tracks in the paired `网资沟通文案_复制即用版` and `网资咨询师承接跟进表_详细版`.
    - When delivering a complete sales package, include the consultant materials after the four visual files: `网资沟通文案_复制即用版.docx/.md` and `网资咨询师承接跟进表_详细版.xlsx`.
@@ -151,4 +151,5 @@ Open `00_交付入口.html` or `report-v2.png` to review. The script does not cr
 
 ## References
 
-- Read `references/report-spec.md` for the exact report schema, wording bank, visual layout, and prompt snippets.
+- Read `references/canonical-v2-layout.md` for the fixed original-report composition and acceptance checks.
+- Read `references/report-spec.md` for case wording, project mapping, and prompt snippets. Its legacy general layout is only for explicit requests to use the older renderer.

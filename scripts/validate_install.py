@@ -30,6 +30,7 @@ def validate_common(root: Path) -> None:
         "agents/AGENTS.md",
         "agents/face-report-agents.yaml",
         "references/report-spec.md",
+        "references/canonical-v2-layout.md",
         "scripts/render_report.py",
         "scripts/render_sales_v2.py",
         "scripts/build_handoff_sheet.py",
@@ -73,18 +74,20 @@ def validate_repo(root: Path) -> None:
     tracked_like_images = [
         p for p in root.rglob("*")
         if p.is_file()
-        and ".git" not in p.parts
+        and not ({".git", "outputs", "reports", ".venv", "venv"} & set(p.relative_to(root).parts))
+        and p.relative_to(root).parts[:2] != ("sample", "private")
         and p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp", ".heic"}
     ]
     if tracked_like_images:
         fail("image files found in repository working tree: " + ", ".join(str(p) for p in tracked_like_images[:10]))
-    ok("no image files in repository working tree")
+    ok("no image files outside ignored output/private directories")
 
     skill_required = [
         "skill/SKILL.md",
         "skill/agents/AGENTS.md",
         "skill/agents/face-report-agents.yaml",
         "skill/references/report-spec.md",
+        "skill/references/canonical-v2-layout.md",
         "scripts/render_report.py",
         "scripts/render_sales_v2.py",
         "scripts/build_handoff_sheet.py",
