@@ -26,3 +26,7 @@ sample/private/
 !assets-placeholder/.gitkeep
 !sample/manifest.example.json
 
+
+# 自己的业务知识库，不提交
+knowledge/*
+!knowledge/README.md

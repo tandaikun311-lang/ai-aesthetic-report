@@ -19,8 +19,9 @@ cd ai-aesthetic-report
 ```bash
 python3 -m pip install -r requirements.txt
 python3 scripts/self_check.py
-open outputs/self-check-demo/report-v2.html
 ```
+
+用浏览器打开 `outputs/self-check-demo/report-v2.html`（Mac 可双击，Windows 在文件夹里双击即可）。
 
 看到 `report-v2.html`，说明以下链路已通过：
 
@@ -39,8 +40,9 @@ bash install.sh
   --manifest sample/manifest.demo.json \
   --out outputs/demo-install-check \
   --no-screenshot
-open outputs/demo-install-check/report-v2.html
 ```
+
+用浏览器打开 `outputs/demo-install-check/report-v2.html`（Mac 可双击，Windows 在文件夹里双击即可）。
 
 看到安装后的 demo 报告，说明 `face-report-v2` 命令行入口可用。
 

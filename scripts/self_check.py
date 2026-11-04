@@ -80,7 +80,7 @@ def main() -> int:
         raise SystemExit("[FAIL] handoff sheet missing image blocks")
     print("[OK] handoff sheet rendered successfully")
 
-    print(f"[DONE] open {out_dir / 'report-v2.html'}")
+    print(f"[DONE] 用浏览器打开：{out_dir / 'report-v2.html'}")
     return 0
 
 

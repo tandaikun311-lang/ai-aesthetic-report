@@ -1,28 +1,40 @@
 ---
 name: face-consultation-report
-description: Create AI facial consultation and aesthetic upgrade reports from a user-provided portrait. Use when the user asks for 面诊分析报告, AI面诊, 五官美学分析, 素人照片升级, before/after facial aesthetics report, 医美咨询报告, 医美升单报告, 美学升级报告, or wants a customer-facing report with AI After, adjustment labels, project mapping, visual age, and prioritized recommendations.
+description: Create AI facial aesthetic communication reports (not medical diagnosis) from a user-provided portrait. Use when the user asks for 美学升级报告, AI美学报告, 五官美学分析, 面部美学沟通报告, 素人照片美学升级, before/after facial aesthetics report, 医美美学沟通报告, 咨询沟通报告, or wants a customer-facing report with AI After, adjustment labels, project mapping, visual age, and prioritized recommendations.
 ---
 
 # Face Consultation Report
 
 Use this skill to turn one clear portrait into a Chinese aesthetic consultation deliverable: original photo, AI upgraded effect image, face/feature observations, project mapping, customer-facing design thinking, and a premium report image. The default visual standard is the original 2026-05-27 V2 report layout, reproduced by `scripts/render_sales_v2.py` and specified in `references/canonical-v2-layout.md`. Keep its composition when preparing a new case; replace the case content and portraits.
 
-## Required Business Knowledge
+## Optional Business Knowledge
 
-Before generating a report for a medical-aesthetic business scenario, read these
-optional local knowledge-base files **if they exist on this machine**:
+可选：在技能目录的 `knowledge/` 下放你自己门店的项目映射表（例如 `knowledge/项目映射表.md`）、沟通 SOP 或设计规范。
+Before generating a report, read any files in `knowledge/` **if they exist**. If the folder is empty or missing (normal on a fresh install), rely on `references/report-spec.md` and the consultant materials in `templates/`. When present, use them to map every visible improvement in the AI effect image to a project direction, a consultant explanation, and a next-step face-to-face consultation prompt. Never copy `knowledge/` content into a public repository.
 
-- `~/.openclaw/workspace/knowledge-base/02-产品体系/后端高客单/AI面诊调整点收费项目映射库.md`
-- `~/.openclaw/workspace/knowledge-base/03-成交体系/门店成交/AI面诊报告沟通成交SOP.md`
-- `~/.openclaw/workspace/knowledge-base/06-运营工具/文档排版风格/AI面诊报告设计升级规范.md`
+## Quick Mode（快速模式：3 步出报告）
 
-These are the original author's private business references (pricing maps, sales
-SOPs) and are NOT shipped with this repository. If they are missing — which is
-normal on a recipient's machine — skip them and rely on the report schema in
-`references/report-spec.md` plus the consultant materials in `templates/`. When
-present, use them to map every visible improvement in the AI After image to a
-project direction, a consultant explanation, and a next-step face-to-face
-consultation prompt.
+Use this when the user says 快速出报告 / 简单版 / 先出一版, or does not need the full multi-agent package:
+
+1. **质检与观察**：确认照片为成年人、正脸清晰、已取得客户书面同意；写 3–4 条美学观察（只描述可见观感，不下医学结论）。
+2. **效果图**：生成或接收一张干净的客户 AI 效果图（见下方“没有图像模型时的降级办法”），再做一张带编号的效果标记图。
+3. **渲染**：把观察、项目方向、设计思路和三条建议填入 manifest，运行 `face-report-v2 --manifest <manifest.json> --out <输出目录>`（Windows：`face-report-v2.cmd`），检查 `report-v2.html/png` 后交付。
+
+快速模式仍须遵守 Operating Boundaries 与隐私规则；需要完整沟通材料时再切换到下方完整多智能体流程。
+
+## Fallback Without an Image Model（没有图像模型时的降级办法）
+
+If no image-editing model is available in the current tool (e.g. some Claude Code or offline setups):
+
+- Tell the user plainly that this environment cannot generate the AI effect image.
+- Ask the user to upload their own clean AI effect image made elsewhere (e.g. another image tool they are authorized to use), and optionally their own annotated version.
+- Record in the private case folder that the effect image was user-supplied, and its source tool if known.
+- Never substitute the original photo, a crop, or a simple filter for the effect image; if no effect image is supplied, stop after the observation copy and explain what is missing.
+
+## Consent and Privacy
+
+- 上传客户照片给任何 AI 图像模型（含云端服务）之前，必须先确认已取得客户的书面同意（同意照片被用于 AI 处理与美学报告制作）。未确认时先提醒用户，不要上传。
+- Keep client photos and outputs in a private local folder; never commit them to any repository.
 
 ## Operating Boundaries
 
@@ -33,11 +45,9 @@ consultation prompt.
 - If the portrait appears to be a minor or the task requests sexualized beauty framing, stop and ask for a suitable adult, non-sexualized portrait.
 - Follow the user's requested output path and workspace rules. Otherwise use a descriptive folder under `~/Downloads/`; never save identifiable client material in this repository.
 
-## Workflow
+## Full Workflow (Multi-Agent Execution)
 
-## Multi-Agent Execution
-
-This skill must be executed as a multi-agent workflow by default. Load `agents/AGENTS.md` and `agents/face-report-agents.yaml` before producing a complete report.
+For a complete sales package, run the multi-agent workflow (use Quick Mode above for a fast single report). Load `agents/AGENTS.md` and `agents/face-report-agents.yaml` before producing a complete report.
 
 Required agent order:
 
@@ -45,7 +55,7 @@ Required agent order:
 2. `02_原图美学诊断智能体`
 3. `03_AI效果设计智能体`
 4. `04_效果标记校对智能体`
-5. `05_项目映射与升单智能体`
+5. `05_项目映射与升单智能体`（内部环节，客户可见文案不出现“升单/成交”）
 6. `06_客户报告文案智能体`
 7. `07_报告排版渲染智能体`
 8. `08_网资沟通承接智能体`
@@ -64,7 +74,10 @@ Each step must produce handoff material for the next agent. The final answer sho
 
 Archive rule: after every optimization or revision of this skill's reports, communication documents, tables, prompts, or agent rules, create/update a local archive record before final response. The archive record must include the optimization time, changed files, change summary, QA result, and final deliverable path. This is a local archive/version record only; do not create or update a migration package unless the user explicitly asks for one.
 
+### Steps
+
 1. **Collect input**
+   - Confirm the client has given written consent before any photo is sent to an AI image model.
    - If no portrait is provided, ask for a clear front-facing or near-front-facing adult portrait.
    - Prefer one person, neutral expression, visible eyes/nose/lips/skin, no heavy filters, no extreme angle.
    - If a local path is provided, inspect it before editing.
@@ -76,7 +89,7 @@ Archive rule: after every optimization or revision of this skill's reports, comm
    - Create an adjustment-to-project list. Each clear improvement must map to at least one project direction, for example: eye brightening -> eye-area management; tear trough softening -> eye-area filler/collagen/eye-bag evaluation; midface support -> midface support/regenerative/filler direction; jawline cleanup -> contour/tightening direction; skin glow -> skin booster/light-based treatment direction.
 
 3. **Generate the upgraded image**
-   - Produce a clean `客户 AI 效果图` from the authorized portrait before adding any labels. Use an explicitly selectable `gpt-image-2` image-editing route with `quality=high` when available. Do not describe an automatic or unpinned image tool as a confirmed `gpt-image-2` run. If that route is unavailable, explain the limitation and obtain the user's choice before using another model.
+   - Produce a clean `客户 AI 效果图` from the authorized portrait before adding any labels. Use an explicitly selectable `gpt-image-2` image-editing route with `quality=high` when available. Do not describe an automatic or unpinned image tool as a confirmed `gpt-image-2` run. If that route is unavailable, explain the limitation and obtain the user's choice before using another model, or use the Fallback Without an Image Model above.
    - Inspect the source portrait first. Save the selected clean effect image separately and record the model, settings, source image, output path, and generation time in the private case folder. Never commit these records or images to GitHub.
    - Do not substitute the original photo, a local retouch, a crop, or an annotated image for the clean AI effect image.
    - Prompt for a clearly visible medical-aesthetic upgrade, not a simple beauty filter: brighter eyes, softened tear troughs/eye bags, better midface support, softer nasolabial shadows, cleaner jawline, more luminous skin, healthier lips, and a refined high-end medical-aesthetic temperament.
@@ -93,7 +106,7 @@ Archive rule: after every optimization or revision of this skill's reports, comm
    - Use customer-facing outcome titles such as `不换脸，也能明显变精致`; do not expose internal wording such as `每一个变美点都对应一个项目`.
    - Keep the main report visually clean. Put short project directions in the report; put detailed recommended projects and talk tracks in the paired `网资沟通文案_复制即用版` and `网资咨询师承接跟进表_详细版`.
    - When delivering a complete sales package, include the consultant materials after the four visual files: `网资沟通文案_复制即用版.docx/.md` and `网资咨询师承接跟进表_详细版.xlsx`.
-   - Use `scripts/render_report.py` only for the older general report layout.
+   - `legacy/render_report.py` is the old, unmaintained general layout; use it only if the user explicitly asks for it.
    - Render HTML first and screenshot to PNG for sharing. Do not export PDF unless the user explicitly asks for PDF, printing, or archive delivery.
 
 5. **Return**

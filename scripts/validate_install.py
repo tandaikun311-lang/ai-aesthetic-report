@@ -31,7 +31,7 @@ def validate_common(root: Path) -> None:
         "agents/face-report-agents.yaml",
         "references/report-spec.md",
         "references/canonical-v2-layout.md",
-        "scripts/render_report.py",
+        "legacy/render_report.py",
         "scripts/render_sales_v2.py",
         "scripts/build_handoff_sheet.py",
         "templates/网资沟通文案_复制即用版.md",
@@ -42,7 +42,7 @@ def validate_common(root: Path) -> None:
     for item in required:
         require(root / item)
 
-    py_compile.compile(str(root / "scripts/render_report.py"), doraise=True)
+    py_compile.compile(str(root / "legacy/render_report.py"), doraise=True)
     py_compile.compile(str(root / "scripts/render_sales_v2.py"), doraise=True)
     py_compile.compile(str(root / "scripts/build_handoff_sheet.py"), doraise=True)
     ok("render scripts compile")
@@ -88,7 +88,7 @@ def validate_repo(root: Path) -> None:
         "skill/agents/face-report-agents.yaml",
         "skill/references/report-spec.md",
         "skill/references/canonical-v2-layout.md",
-        "scripts/render_report.py",
+        "legacy/render_report.py",
         "scripts/render_sales_v2.py",
         "scripts/build_handoff_sheet.py",
         "templates/网资沟通文案_复制即用版.md",
@@ -99,7 +99,7 @@ def validate_repo(root: Path) -> None:
     for item in skill_required:
         require(root / item)
 
-    py_compile.compile(str(root / "scripts/render_report.py"), doraise=True)
+    py_compile.compile(str(root / "legacy/render_report.py"), doraise=True)
     py_compile.compile(str(root / "scripts/render_sales_v2.py"), doraise=True)
     py_compile.compile(str(root / "scripts/build_handoff_sheet.py"), doraise=True)
     py_compile.compile(str(root / "scripts/self_check.py"), doraise=True)
