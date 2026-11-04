@@ -175,7 +175,7 @@ def defaults() -> dict[str, Any]:
             {
                 "title": "建议一：眼周精调",
                 "why": "眼周是第一眼最容易显疲惫的位置。原图主要问题不是眼睛小，而是眼下暗沉、泪沟和眼袋阴影让精神感被拉低。",
-                "direction": "先做眼周管理、熊猫针/胶原眼周方向，必要时做眼袋评估。这个变化客户最容易看见，也最适合作为第一成交入口。",
+                "direction": "先做眼周管理、熊猫针/胶原眼周方向，必要时做眼袋评估。眼周变化最直观，适合作为面诊时优先沟通的方向。",
             },
             {
                 "title": "建议二：面中支撑",
@@ -185,10 +185,10 @@ def defaults() -> dict[str, Any]:
             {
                 "title": "建议三：肤质轮廓维护",
                 "why": "肤质和轮廓决定精致度，但它们更适合在眼周、面中状态改善后做加分项，效果更完整。",
-                "direction": "用水光/光子改善通透度，再配合下颌缘收紧和唇部气色管理，做精致感加购和后续复购维护。",
+                "direction": "用水光/光子改善通透度，再配合下颌缘收紧和唇部气色管理，作为后续的精致感提升与日常维护方向。",
             },
         ],
-        "footer": "本报告为 AI 医美效果模拟与方案沟通材料，最终项目以医生面诊评估为准。",
+        "footer": "本报告为 AI 视觉模拟与美学沟通材料，不构成医学诊断、治疗建议或效果承诺，最终方案以医生面诊评估为准。",
     }
 
 
@@ -302,7 +302,7 @@ def render_html(data: dict[str, Any], before: str, after: str, project_images: l
       <div class="age-box"><span>AI 视觉观感评估</span><strong>{esc(data["visual_age"])}</strong><p>{esc(data["visual_age_note"])}</p></div>
     </section>
     <section class="hero">
-      <aside class="panel"><div class="panel-title"><h2>原图问题</h2><span>BEFORE</span></div><div class="problem-list">{diagnosis_html}</div></aside>
+      <aside class="panel"><div class="panel-title"><h2>美学观察</h2><span>OBSERVATION</span></div><div class="problem-list">{diagnosis_html}</div></aside>
       <section class="photo before"><img src="./{esc(before)}" alt="Before"><div class="label">Before</div></section>
       <section class="photo after"><img src="./{esc(after)}" alt="After"><div class="label">After</div></section>
       <aside class="panel"><div class="panel-title"><h2>项目映射</h2><span>PROJECT</span></div><div class="map-list">{mappings_html}</div></aside>
@@ -370,14 +370,21 @@ def render_entry(before: str, effect: str, after: str) -> str:
 """
 
 
+SCREENSHOT_HELP = (
+    "【截图失败】PNG 报告图没有导出成功。\n"
+    "解决办法：\n"
+    "  Mac：bash install.sh --full\n"
+    "  Windows：powershell -ExecutionPolicy Bypass -File install.ps1 -Full\n"
+    "  或手动：python -m pip install playwright && python -m playwright install chromium\n"
+    "暂时不需要 PNG 时，可加 --no-screenshot 只生成 HTML。"
+)
+
+
 def screenshot_png(html_path: Path, png_path: Path) -> None:
     try:
         from playwright.sync_api import sync_playwright
     except ImportError as exc:
-        raise SystemExit(
-            "Playwright is required for PNG export. Install it with "
-            "`pip install playwright && playwright install chromium`, or use --no-screenshot to skip."
-        ) from exc
+        raise SystemExit(SCREENSHOT_HELP + "\n原因：未安装 Playwright。") from exc
 
     browser_path = find_browser()
     launch_kwargs: dict[str, Any] = {"headless": True}
@@ -387,12 +394,15 @@ def screenshot_png(html_path: Path, png_path: Path) -> None:
     else:
         logger.info("No system browser found; using Playwright's bundled Chromium.")
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(**launch_kwargs)
-        page = browser.new_page(viewport={"width": 1640, "height": 1200}, device_scale_factor=2)
-        page.goto(html_path.as_uri(), wait_until="networkidle")
-        page.locator(".page").screenshot(path=str(png_path))
-        browser.close()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(**launch_kwargs)
+            page = browser.new_page(viewport={"width": 1640, "height": 1200}, device_scale_factor=2)
+            page.goto(html_path.as_uri(), wait_until="networkidle")
+            page.locator(".page").screenshot(path=str(png_path))
+            browser.close()
+    except Exception as exc:  # noqa: BLE001 - 给新手友好的中文提示
+        raise SystemExit(f"{SCREENSHOT_HELP}\n原因：{exc}\nHTML 已生成，可先用浏览器打开：{html_path}") from exc
     logger.info("Wrote PNG: %s", png_path)
 
 

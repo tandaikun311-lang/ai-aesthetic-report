@@ -6,9 +6,9 @@ Use this reference for case-specific wording and project mapping. The default re
 
 Default deliverable:
 
-- 16:9 premium white-blue report page for the older `render_report.py` only. The standard V2 has a 1600px content width and variable height.
+- 16:9 premium white-blue report page for the older `legacy/render_report.py` only. The standard V2 has a 1600px content width and variable height.
 - Center before/after portrait comparison.
-- Left column: "问题诊断 DIAGNOSIS".
+- Left column: "美学观察 OBSERVATION".
 - Right-middle column: "美学解决方案 SOLUTION".
 - Far-right column: "AI分析报告 AI ANALYSIS".
 - Bottom strip: capability/trust notes.

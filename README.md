@@ -1,5 +1,42 @@
 # AI 美学升级报告
 
+> 作者：谭代坤（老谭出品）｜定制与培训请加微信 vip20282
+
+## 3 步装好
+
+先装好 [Git](https://git-scm.com/downloads) 和 [Python 3.10+](https://www.python.org/downloads/)（Windows 安装 Python 时勾选“Add Python to PATH”）。
+
+**Mac（打开“终端”）：**
+
+```bash
+# 1. 下载
+git clone https://github.com/tandaikun311-lang/ai-aesthetic-report.git && cd ai-aesthetic-report
+# 2. 安装（--full 会同时装好 PNG 截图组件；用 Claude Code 的再加 --claude）
+bash install.sh --full
+# 3. 跑一份脱敏 demo 验证
+~/.local/bin/face-report-v2 --manifest sample/manifest.demo.json --out outputs/demo
+```
+
+**Windows（打开“PowerShell”）：**
+
+```powershell
+# 1. 下载
+git clone https://github.com/tandaikun311-lang/ai-aesthetic-report.git; cd ai-aesthetic-report
+# 2. 安装（-Full 会同时装好 PNG 截图组件；用 Claude Code 的再加 -Claude）
+powershell -ExecutionPolicy Bypass -File install.ps1 -Full
+# 3. 跑一份脱敏 demo 验证
+& "$env:USERPROFILE\.local\bin\face-report-v2.cmd" --manifest sample\manifest.demo.json --out outputs\demo
+```
+
+第 3 步完成后，用浏览器打开 `outputs/demo` 文件夹里的 `report-v2.html`（或看 `report-v2.png`），能看到报告就说明装好了。
+
+- 技能安装位置：Codex 为 `~/.codex/skills/face-consultation-report`，Claude Code（`--claude` / `-Claude`）为 `~/.claude/skills/face-consultation-report`。
+- 截图组件没装好时只会生成 HTML，并给出中文提示；网络正常后重跑带 `--full` / `-Full` 的安装命令即可。
+- 想放自己门店的项目映射表：放进技能目录的 `knowledge/` 文件夹（可选，不会被提交）。
+- 使用许可：个人和门店内部可免费使用、修改；禁止转售、二次打包售卖、去除署名后分发。详见 [`LICENSE`](LICENSE)。
+
+---
+
 这是一个本机可执行的医美美学升级报告工作流，用于把客户正脸照片整理成：
 
 1. 原图
@@ -20,6 +57,8 @@
 |---|---|
 | `skill/` | Codex 技能说明、智能体分工、报告规范 |
 | `scripts/` | HTML/PNG 报告渲染脚本 |
+| `legacy/` | 旧版报告脚本，已不维护 |
+| `knowledge/` | 可选：放你自己的项目映射表（不提交） |
 | `templates/` | 网资沟通文案和跟进表模板 |
 | `docs/` | 迁移说明、项目填写入口、参考图学习记录 |
 | `COLLABORATOR_QUICKSTART.md` | collaborator 3 分钟验收说明 |
@@ -29,7 +68,7 @@
 
 ## 发给协作者
 
-把本仓库链接和 [`COLLABORATOR_QUICKSTART.md`](COLLABORATOR_QUICKSTART.md) 一起发给获得你授权的使用者。对方可先用合成 demo 验证版式，再在自己的私有目录处理客户照片。仓库是公开可访问的；使用、复制和再分发范围以 [`LICENSE`](LICENSE) 为准。若准备允许任何人自由复用或再分发，需要另行确定并更新许可证。
+把本仓库链接和 [`COLLABORATOR_QUICKSTART.md`](COLLABORATOR_QUICKSTART.md) 一起发给获得你授权的使用者。对方可先用合成 demo 验证版式，再在自己的私有目录处理客户照片。仓库公开可访问；个人和门店内部可免费使用、修改，禁止转售或去除署名后分发，详见 [`LICENSE`](LICENSE)。
 
 ## 3 分钟验证流程
 
@@ -42,8 +81,9 @@ bash install.sh
   --manifest sample/manifest.demo.json \
   --out outputs/demo-install-check \
   --no-screenshot
-open outputs/demo-install-check/report-v2.html
 ```
+
+用浏览器打开 `outputs/demo-install-check/report-v2.html` 查看结果。
 
 看到报告 HTML 后，说明安装目录、命令行入口、manifest 读取、素材复制和 HTML 渲染已跑通。
 
@@ -52,8 +92,9 @@ open outputs/demo-install-check/report-v2.html
 ```bash
 python3 -m pip install -r requirements.txt
 python3 scripts/self_check.py
-open outputs/self-check-demo/report-v2.html
 ```
+
+用浏览器打开 `outputs/self-check-demo/report-v2.html` 查看结果。
 
 如果要同时导出 `report-v2.png`，先安装 Playwright 和浏览器，再运行：
 
@@ -78,7 +119,7 @@ bash install.sh
 
 - Codex 技能：`~/.codex/skills/face-consultation-report`
 - V2 报告渲染命令：`~/.local/bin/face-report-v2`
-- 基础报告渲染命令：`~/.local/bin/face-report-basic`
+- 旧版基础报告命令（已不维护，代码在 `legacy/`）：`~/.local/bin/face-report-basic`
 - 网资沟通总表命令：`~/.local/bin/face-report-handoff`
 
 需要通过安装后的 `face-report-v2` 命令导出 PNG 时，把 Playwright 装到技能自己的虚拟环境，并安装 Chromium：
@@ -88,7 +129,7 @@ bash install.sh
 ~/.codex/skills/face-consultation-report/.venv/bin/python -m playwright install chromium
 ```
 
-本仓库目前公开可访问，但使用授权仍以 `LICENSE` 为准。客户照片、AI 效果图、报告成品和内部定价/SOP 都不在仓库内，也不要提交进来（见 `PRIVACY.md`）。
+本仓库公开可访问，使用范围见 `LICENSE`。客户照片、AI 效果图、报告成品和内部定价/SOP 都不在仓库内，也不要提交进来（见 `PRIVACY.md`）。
 
 详细步骤看：
 

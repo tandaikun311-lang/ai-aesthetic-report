@@ -62,7 +62,7 @@ find . -name ".env" -o -name "*.pem" -o -name "*.key" -o -name "cookies.json" -o
 ```bash
 python3 -m pip install -r requirements.txt
 python3 scripts/self_check.py
-open outputs/self-check-demo/report-v2.html
+# 用浏览器打开 outputs/self-check-demo/report-v2.html
 ```
 
 能看到 `report-v2.html`，说明仓库文件、脚本、依赖和 demo 渲染链路仍然正常。

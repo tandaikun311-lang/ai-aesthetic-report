@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Render a Chinese facial consultation report from a JSON manifest.
+"""[旧版 / LEGACY] 已不再维护，默认请使用 scripts/render_sales_v2.py。
+
+Render a Chinese facial consultation report from a JSON manifest.
 
 The script creates a deterministic HTML report and copies referenced images
 into the output folder. It intentionally avoids non-stdlib dependencies.
@@ -342,7 +344,7 @@ def render_html(manifest: dict[str, Any], assets_dir: Path) -> str:
     </header>
     <section class="main">
       <aside class="panel">
-        <div class="panel-title"><h2>问题诊断</h2><span>DIAGNOSIS</span></div>
+        <div class="panel-title"><h2>美学观察</h2><span>OBSERVATION</span></div>
         <div class="stack">{diagnosis_html}</div>
       </aside>
       <section class="compare">
